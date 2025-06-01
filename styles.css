@@ -4,25 +4,26 @@
 
 /* --- Global Styles & Resets --- */
 :root {
-  --primary-color: #5E35B1; /* Deep Purple - New Primary */
-  --primary-dark-color: #4527A0; /* Darker Deep Purple */
-  --accent-color: #00ACC1; /* Cyan - New Accent */
-  --error-color: #E53935; /* Material Red (slightly desaturated) */
-  --success-color: #43A047; /* Material Green (slightly desaturated) */
-  --text-color: #37474F; /* Bluish Grey - Main Text */
-  --label-color: #607D8B; /* Bluish Grey - Labels */
-  --border-color: #CFD8DC; /* Lighter Bluish Grey - Borders */
-  --background-light: #ECEFF1; /* Very Light Bluish Grey - Page Background */
+  --primary-color: #673AB7; /* Deep Purple 500 - Refined Primary */
+  --primary-dark-color: #512DA8; /* Deep Purple 700 */
+  --accent-color: #00BCD4; /* Cyan 500 - Refined Accent */
+  --accent-dark-color: #0097A7; /* Cyan 700 */
+  --error-color: #F44336; /* Red 500 */
+  --success-color: #4CAF50; /* Green 500 */
+  --text-color: #263238; /* Blue Grey 900 - Darker Text for Readability */
+  --label-color: #546E7A; /* Blue Grey 600 - Softer Labels */
+  --border-color: #B0BEC5; /* Blue Grey 200 - Softer Borders */
+  --background-light: #FAFAFA; /* Grey 50 - Very Light Page Background */
   --white: #ffffff;
-  --card-shadow: 0 3px 6px rgba(0,0,0,0.08), 0 3px 6px rgba(0,0,0,0.12); /* Softer, more spread shadow */
-  --card-hover-shadow: 0 6px 12px rgba(0,0,0,0.1), 0 6px 12px rgba(0,0,0,0.15);
-  --border-radius: 8px; /* Slightly larger radius */
-  --input-height: 2.8rem; /* Consistent input height */
+  --card-shadow: 0 2px 5px rgba(0,0,0,0.06), 0 2px 8px rgba(0,0,0,0.08); /* Even Softer Shadow */
+  --card-hover-shadow: 0 5px 12px rgba(0,0,0,0.08), 0 4px 10px rgba(0,0,0,0.1);
+  --border-radius: 6px; /* Slightly smaller, crisper radius */
+  --input-height: 2.9rem; /* Consistent input height, allows a bit more space */
 }
 
 body {
   font-family: 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: var(--background-light); /* Use a light solid background */
+  background-color: var(--background-light);
   margin: 0;
   padding: 20px;
   line-height: 1.6;
@@ -43,98 +44,98 @@ body {
   justify-content: center;
   align-items: center;
   width: 100%;
-  flex-grow: 1; /* Allow wrapper to take available space */
+  flex-grow: 1;
 }
 
 .login-container {
-  background: linear-gradient(145deg, var(--white) 0%, #f8f9fa 100%); /* Subtle gradient for login card */
-  box-shadow: 0 12px 35px rgba(50, 50, 93, 0.15), 0 5px 15px rgba(0, 0, 0, 0.1); /* More prominent shadow */
+  background: var(--white); /* Solid white for cleaner look */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1), 0 6px 15px rgba(0, 0, 0, 0.08);
   border-radius: var(--border-radius);
   width: 100%;
-  max-width: 400px; /* Slightly narrower */
-  padding: 35px 45px; /* More padding */
-  animation: fadeInUp 0.6s ease-out forwards;
+  max-width: 380px; /* Optimal for login */
+  padding: 40px;
+  animation: fadeInUp 0.5s ease-out forwards;
   text-align: center;
   border-top: 4px solid var(--primary-color);
 }
 
 .login-header {
-  margin-bottom: 30px;
+  margin-bottom: 25px;
 }
 .login-icon {
-  font-size: 52px;
+  font-size: 48px; /* Slightly smaller */
   color: var(--primary-color);
-  margin-bottom: 12px;
-  display: inline-block; /* Allows margin bottom to work */
+  margin-bottom: 10px;
+  display: inline-block;
 }
 .login-container h2 {
   color: var(--primary-dark-color);
   margin-bottom: 0;
-  font-size: 1.9em;
+  font-size: 1.7em; /* Adjusted */
   font-weight: 500;
 }
 .login-container .input-field {
-  margin-bottom: 2.5rem; /* Ensure space for errors */
+  margin-bottom: 2.6rem; /* Space for potential errors */
 }
 .login-container .input-field label {
-  left: 3rem; /* Adjust for icon */
+  left: 2.9rem; /* Align with prefix icon */
 }
 .login-container .input-field input:focus + label,
 .login-container .input-field label.active {
-  transform: translateY(-145%) translateX(-3rem) scale(0.75); /* Adjusted transform */
+  transform: translateY(-140%) translateX(-2.9rem) scale(0.8); /* Fine-tuned */
 }
 
 .login-btn {
   width: 100%;
-  margin-top: 25px;
+  margin-top: 20px;
   background-color: var(--primary-color);
-  font-size: 1rem;
-  height: 44px;
-  line-height: 44px;
+  font-size: 0.95rem;
+  height: 42px;
+  line-height: 42px;
 }
 .login-btn:hover {
   background-color: var(--primary-dark-color);
-  transform: translateY(-2px); /* Subtle lift on hover */
+  transform: translateY(-2px);
 }
 
 
 /* --- Main Form Container --- */
 .container {
   background-color: var(--white);
-  box-shadow: 0 5px 20px rgba(0,0,0,0.08); /* Refined shadow */
+  box-shadow: 0 8px 25px rgba(0,0,0,0.07); /* Main container shadow */
   border-radius: var(--border-radius);
   width: 100%;
-  max-width: 780px; /* Slightly wider */
-  padding: 28px 35px; /* Adjusted padding */
-  margin: 30px auto 50px auto; /* Increased margin */
+  max-width: 760px; /* Adjusted width */
+  padding: 30px 40px; /* Generous padding */
+  margin: 30px auto 50px auto;
   transition: all 0.3s ease-out;
 }
 .form-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 30px;
-    padding-bottom: 20px;
+    margin-bottom: 25px;
+    padding-bottom: 18px;
     border-bottom: 1px solid var(--border-color);
 }
 .container h2 {
   text-align: left;
   color: var(--primary-dark-color);
   margin: 0;
-  font-size: 1.8em;
+  font-size: 1.6em; /* Adjusted */
   font-weight: 500;
 }
 .logged-in-user {
-    font-size: 0.9em;
+    font-size: 0.85em;
     color: var(--label-color);
     background-color: var(--background-light);
-    padding: 5px 10px;
+    padding: 6px 12px;
     border-radius: 4px;
 }
 
 
 @keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(25px); }
+  from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
@@ -142,30 +143,31 @@ body {
 .card {
   background-color: var(--white);
   border-radius: var(--border-radius);
-  box-shadow: none; /* Remove individual card shadow, container has shadow */
-  border: 1px solid var(--border-color); /* Add border to cards */
-  margin-bottom: 28px;
-  transition: border-color 0.3s ease;
-  overflow: visible; /* Allow error messages to overflow if needed, though they shouldn't */
+  box-shadow: none;
+  border: 1px solid var(--border-color);
+  margin-bottom: 30px; /* More space between cards */
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  overflow: visible;
 }
 .card:hover {
-  border-color: var(--primary-color); /* Highlight card on hover */
+  border-color: var(--primary-color);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05); /* Subtle shadow on hover */
 }
 .card .card-content {
-  padding: 22px 26px;
+  padding: 25px 30px; /* Increased padding */
 }
 .card .card-title {
-  font-size: 1.15rem;
+  font-size: 1.1rem; /* Adjusted */
   font-weight: 500;
   color: var(--primary-color);
-  margin: -23px -27px 22px -27px; /* Adjust for new padding */
-  padding: 16px 26px;
+  margin: -26px -31px 25px -31px;
+  padding: 18px 30px;
   border-bottom: 1px solid var(--border-color);
-  background-color: #fdfdff; /* Slightly off-white for title background */
+  background-color: #fcfcff; /* Very light tint */
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-radius: var(--border-radius) var(--border-radius) 0 0; /* Match card radius */
+  border-radius: var(--border-radius) var(--border-radius) 0 0;
 }
 .event-card .card-title .remove-event-btn {
     margin: 0;
@@ -175,17 +177,17 @@ body {
 /* --- Input Fields (Material Design Inspired) --- */
 .input-field {
   position: relative;
-  margin-top: 1.5rem;
-  margin-bottom: 2.8rem; /* Increased space for error messages */
+  margin-top: 1.2rem; /* Reduced top margin */
+  margin-bottom: 3rem; /* CRITICAL: Space for error message below */
 }
 .input-field .prefix {
     position: absolute;
-    font-size: 1.7rem;
-    top: calc( (var(--input-height) - 1.7rem) / 2 ); /* Vertically center prefix */
-    left: 0.2rem;
+    font-size: 1.6rem; /* Adjusted */
+    top: calc( (var(--input-height) - 1.6rem) / 2 );
+    left: 0.3rem;
     color: var(--label-color);
     transition: color .2s;
-    width: 2.5rem; /* Ensure space for prefix */
+    width: 2.6rem;
     text-align: center;
 }
 .input-field input:focus ~ .prefix {
@@ -205,19 +207,18 @@ body {
   outline: none;
   height: var(--input-height);
   width: 100%;
-  font-size: 1rem;
+  font-size: 0.95rem; /* Slightly smaller input text */
   margin: 0;
-  padding: 0.6rem 0; /* Adjust padding for text alignment */
+  padding: 0.7rem 0; /* Vertical padding for text */
   box-shadow: none;
   box-sizing: border-box;
-  transition: border-color 0.3s, box-shadow 0.3s;
+  transition: border-color 0.2s ease-in-out;
   color: var(--text-color);
 }
-/* Adjust padding if prefix is present */
 .input-field .prefix ~ input[type="text"],
 .input-field .prefix ~ input[type="password"],
 .input-field .prefix ~ input[type="tel"] {
-    padding-left: 2.8rem; /* Space for prefix icon */
+    padding-left: 2.9rem;
 }
 
 
@@ -227,53 +228,49 @@ body {
 .input-field input[type="number"]:not(.browser-default):focus:not([readonly]),
 .input-field input[type="tel"]:not(.browser-default):focus:not([readonly]) {
   border-bottom: 2px solid var(--primary-color);
-  box-shadow: none; /* Remove inner shadow on focus */
+  box-shadow: none;
 }
 
 .input-field input[type="datetime-local"] {
     color: var(--text-color);
-    padding-right: 5px; /* Ensure space for picker */
+    padding-right: 8px;
 }
 .input-field input[type="datetime-local"]::-webkit-calendar-picker-indicator {
     cursor: pointer;
-    opacity: 0.6;
+    opacity: 0.5; /* Softer default opacity */
     transition: opacity 0.2s;
-    filter: grayscale(50%) opacity(70%); /* Subtler icon */
+    filter: grayscale(60%) opacity(60%);
 }
 .input-field input[type="datetime-local"]::-webkit-calendar-picker-indicator:hover {
-    opacity: 1;
-    filter: none;
+    opacity: 0.8;
+    filter: grayscale(20%) opacity(80%);
 }
 
 .input-field label {
   color: var(--label-color);
   position: absolute;
-  top: 0.7rem; /* Adjusted for input height */
+  top: 0.8rem; /* Align with input text */
   left: 0;
-  font-size: 1rem;
+  font-size: 0.95rem; /* Match input text size */
   cursor: text;
-  transition: transform 0.2s ease-out, color 0.2s ease-out, font-size 0.2s ease-out;
+  transition: transform 0.2s ease-out, color 0.2s ease-out, font-size 0.2s ease-out, background-color 0.2s ease-out, padding 0.2s ease-out;
   transform-origin: 0 0;
   pointer-events: none;
-  background-color: var(--white); /* Ensure label background is solid for overlap */
-  padding: 0 2px; /* Small padding so it doesn't touch input line when not active */
+  background-color: transparent; /* Start transparent */
+  padding: 0 1px; /* Minimal padding initially */
 }
-/* Adjust label position if prefix is present */
 .input-field .prefix ~ label {
-    left: 2.8rem;
+    left: 2.9rem;
 }
 
 
 .input-field input:focus + label,
 .input-field textarea:focus + label,
-.input-field label.active {
-  transform: translateY(-135%) scale(0.8); /* Adjusted transform */
+.input-field label.active { /* This includes .select-label.active */
+  transform: translateY(-125%) scale(0.8); /* Adjusted for better float */
   color: var(--primary-color);
-  background-color: var(--white); /* Crucial for floating label over border */
-  padding: 0 4px; /* Padding for floating label */
-}
-.input-field label.select-label.active { /* Specific for select labels */
-  transform: translateY(-135%) scale(0.8);
+  background-color: var(--white); /* CRITICAL: Label background when floating */
+  padding: 0 5px; /* Padding for floating label text */
 }
 
 
@@ -293,13 +290,14 @@ body {
   visibility: hidden;
   opacity: 0;
   color: var(--error-color);
-  font-size: 0.75rem; /* Smaller error text */
+  font-size: 0.7rem; /* Even smaller error text */
   position: absolute;
-  bottom: -1.9rem; /* Ensure it's below the 2.8rem margin-bottom of input-field */
+  top: calc(var(--input-height) + 4px); /* Position it just below the input's bottom border + small gap */
   left: 0;
-  padding-top: 3px;
-  line-height: 1.2; /* Prevent tall error messages from taking too much space */
+  padding-top: 0; /* No extra top padding, rely on `top` */
+  line-height: 1.3; /* Adjusted line height */
   transition: opacity 0.2s ease-out, visibility 0.2s ease-out;
+  font-weight: 400; /* Lighter weight for errors */
 }
 .input-field .error-message:empty { display: none; }
 .input-field .error-message:not(:empty) { visibility: visible; opacity: 1; }
@@ -319,15 +317,15 @@ body {
 .input-field .select2-container--default .select2-selection--single .select2-selection__rendered {
   color: var(--text-color);
   line-height: normal;
-  padding-right: 25px; /* More space for arrow */
+  padding-right: 28px;
   padding-left: 0;
-  font-size: 1rem;
+  font-size: 0.95rem; /* Match input text size */
 }
 .input-field .select2-container--default .select2-selection--single .select2-selection__arrow {
   height: calc(var(--input-height) - 1px);
   right: 0;
   top: 0;
-  width: 25px; /* Explicit width for arrow area */
+  width: 28px;
 }
 .input-field .select2-container--default.select2-container--open .select2-selection--single,
 .input-field .select2-container--default .select2-selection--single:focus {
@@ -337,28 +335,44 @@ body {
 .input-field .select2-container .select2-selection--single.invalid-select2 {
     border-bottom: 2px solid var(--error-color) !important;
 }
+/* Ensure label for Select2 floats correctly when Select2 has a value or is focused */
+.input-field .select2-container + label.select-label.active {
+    transform: translateY(-125%) scale(0.8);
+    color: var(--primary-color);
+    background-color: var(--white);
+    padding: 0 5px;
+}
+
+
 .select2-dropdown {
   border: 1px solid var(--border-color);
   border-radius: 0 0 var(--border-radius) var(--border-radius);
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1); /* Softer dropdown shadow */
-  z-index: 1055; /* Higher z-index */
+  box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+  z-index: 1060; /* Ensure it's above other elements */
   background-color: var(--white);
 }
 .select2-results__option {
-    padding: 8px 12px;
-    font-size: 0.95rem;
+    padding: 9px 14px; /* More padding in options */
+    font-size: 0.9rem;
+    transition: background-color 0.15s ease-in-out;
 }
 .select2-results__option--highlighted[aria-selected] {
   background-color: var(--primary-color);
   color: var(--white);
 }
+.select2results__option[aria-selected=true] { /* Style for already selected item in dropdown */
+    background-color: var(--background-light);
+    color: var(--primary-dark-color);
+    font-weight: 500;
+}
 .select2-search--dropdown .select2-search__field {
-    padding: 10px;
+    padding: 10px 12px;
     border: 1px solid var(--border-color);
-    border-radius: var(--border-radius);
-    font-size: 0.95rem;
-    margin: 5px;
-    width: calc(100% - 10px);
+    border-radius: 4px; /* Slightly rounded search field */
+    font-size: 0.9rem;
+    margin: 8px;
+    width: calc(100% - 16px);
+    box-sizing: border-box;
 }
 
 
@@ -371,33 +385,33 @@ body {
   color: var(--white);
   background-color: var(--primary-color);
   text-align: center;
-  letter-spacing: .6px; /* Slightly more spacing */
+  letter-spacing: .5px; /* Adjusted */
   transition: background-color .2s ease-out, box-shadow .2s ease-out, transform .15s ease-out;
   cursor: pointer;
   border: none;
   border-radius: var(--border-radius);
-  padding: 0 22px;
-  height: 42px;
-  line-height: 42px;
-  font-size: 0.9rem; /* Standardized font size */
+  padding: 0 24px; /* More horizontal padding */
+  height: 40px; /* Slightly shorter */
+  line-height: 40px;
+  font-size: 0.85rem; /* Adjusted */
   font-weight: 500;
   text-transform: uppercase;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.08), 0 1px 1px rgba(0,0,0,0.04); /* Softer button shadow */
   outline: 0;
-  margin: 10px 5px;
+  margin: 12px 6px; /* Adjusted margin */
 }
 .btn:hover, button:hover {
   background-color: var(--primary-dark-color);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.12), 0 2px 4px rgba(0,0,0,0.08);
+  box-shadow: 0 3px 7px rgba(0,0,0,0.1), 0 2px 3px rgba(0,0,0,0.06);
   transform: translateY(-1px);
 }
 .btn:active, button:active {
     background-color: var(--primary-dark-color);
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
     transform: translateY(0px);
 }
 .btn:disabled, button:disabled {
-  background-color: #B0BEC5 !important; /* Bluish grey disabled */
+  background-color: #CFD8DC !important; /* Lighter disabled color */
   box-shadow: none !important;
   color: #78909C !important;
   cursor: not-allowed;
@@ -405,45 +419,45 @@ body {
 }
 
 .btn .material-icons {
-  font-size: 1.1rem; /* Slightly larger icons in buttons */
+  font-size: 1rem; /* Adjusted */
   line-height: inherit;
 }
-.btn .material-icons.left { margin-right: 10px; }
-.btn .material-icons.right { margin-left: 10px; }
+.btn .material-icons.left { margin-right: 8px; } /* Adjusted */
+.btn .material-icons.right { margin-left: 8px; } /* Adjusted */
 
 .add-event-wrapper {
     text-align: right;
-    margin-top: 15px;
-    margin-bottom: 15px;
+    margin-top: 10px; /* Reduced margin */
+    margin-bottom: 20px; /* Space after add button */
 }
 .add-button {
-  background-color: var(--accent-color); /* Use accent color */
+  background-color: var(--accent-color);
 }
 .add-button:hover {
-  background-color: #00838F; /* Darker Cyan */
+  background-color: var(--accent-dark-color);
 }
 .remove-event-btn {
   background-color: var(--error-color);
-  height: 30px; /* Slightly smaller */
-  width: 30px;
+  height: 28px;
+  width: 28px;
   padding: 0;
   border-radius: 50%;
-  line-height: 30px; /* Ensure icon is centered */
-  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  line-height: 28px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.15);
 }
 .remove-event-btn:hover {
-  background-color: #C62828; /* Darker Red */
+  background-color: #D32F2F; /* Darker Red */
 }
-.remove-event-btn i { font-size: 18px; } /* Smaller icon */
+.remove-event-btn i { font-size: 16px; } /* Smaller icon for smaller button */
 
 .primary-submit-btn {
-    min-width: 160px;
-    margin-top: 30px;
+    min-width: 150px; /* Adjusted */
+    margin-top: 25px; /* Adjusted */
     width: 100%;
-    background-color: var(--success-color); /* Green for final submit */
+    background-color: var(--success-color);
 }
 .primary-submit-btn:hover {
-    background-color: #388E3C; /* Darker Green */
+    background-color: #388E3C;
 }
 @media (min-width: 600px) {
     .primary-submit-btn { width: auto; }
@@ -452,35 +466,37 @@ body {
 
 /* --- Messages & Loaders --- */
 .login-message, .submission-status-message {
-  margin-top: 20px;
-  padding: 10px 15px; /* Adjusted padding */
+  margin-top: 18px; /* Adjusted */
+  padding: 10px 15px;
   border-radius: var(--border-radius);
   font-weight: 500;
   text-align: center;
-  animation: fadeIn 0.5s ease-out;
-  font-size: 0.85em; /* Slightly smaller */
+  animation: fadeIn 0.4s ease-out forwards; /* Faster fade */
+  font-size: 0.8rem; /* Adjusted */
   border-width: 1px;
   border-style: solid;
-  line-height: 1.4;
+  line-height: 1.3; /* Adjusted */
 }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
 .login-message.success, .submission-status-message.success {
-  color: #2E7D32; background-color: #E8F5E9; border-color: #A5D6A7; /* Softer success */
+  color: #388E3C; background-color: #E8F5E9; border-color: #A5D6A7;
 }
 .login-message.error, .submission-status-message.error {
-  color: #C62828; background-color: #FFEBEE; border-color: #EF9A9A; /* Softer error */
+  color: #D32F2F; background-color: #FFEBEE; border-color: #EF9A9A;
 }
 
 .progress-bar {
   position: relative;
-  height: 6px; /* Thicker bar */
+  height: 5px; /* Slightly thinner */
   display: block;
   width: 100%;
-  background-color: #B2DFDB; /* Light Cyan for track */
+  background-color: #B2DFDB; /* Accent light for track */
   border-radius: var(--border-radius);
-  margin: 1.8rem 0;
+  margin: 1.5rem 0; /* Adjusted */
   overflow: hidden;
 }
-.progress-bar .indeterminate { background-color: var(--accent-color); } /* Accent for progress */
+.progress-bar .indeterminate { background-color: var(--accent-color); }
 .progress-bar .indeterminate:before {
   content: ''; position: absolute; background-color: inherit; top: 0; left: 0; bottom: 0; will-change: left, right;
   animation: indeterminate 2.1s cubic-bezier(0.65, 0.815, 0.735, 0.395) infinite;
@@ -493,12 +509,12 @@ body {
 @keyframes indeterminate-short { 0% { left: -200%; right: 100%; } 60% { left: 107%; right: -8%; } 100% { left: 107%; right: -8%; } }
 
 .conditional-section {
-    padding-top: 15px;
-    margin-top: 15px;
-    border-top: 1px dashed var(--border-color); /* Visual separator for conditional sections */
+    padding-top: 12px; /* Adjusted */
+    margin-top: 12px; /* Adjusted */
+    border-top: 1px dashed #CFD8DC; /* Softer dashed border */
 }
 .conditional-section:first-child {
-    border-top: none; /* No top border if it's the first one */
+    border-top: none;
 }
 
 
@@ -506,50 +522,50 @@ body {
 .footer-info {
   text-align: center;
   margin-top: auto;
-  padding: 25px 20px; /* More padding */
-  color: var(--label-color); /* Use label color for footer text on light background */
-  font-size: 0.85em;
+  padding: 20px; /* Adjusted */
+  color: var(--label-color);
+  font-size: 0.8rem; /* Adjusted */
   width: 100%;
-  background-color: var(--white); /* Footer on white background */
-  box-shadow: 0 -2px 5px rgba(0,0,0,0.05); /* Subtle top shadow */
+  background-color: var(--white);
+  box-shadow: 0 -1px 4px rgba(0,0,0,0.04); /* Very subtle top shadow */
 }
 .footer-info strong { color: var(--primary-dark-color); }
-.footer-info small { display: block; margin-top: 5px; font-size: 0.9em; }
+.footer-info small { display: block; margin-top: 4px; font-size: 0.9em; }
 
 /* --- Responsive Adjustments --- */
 @media (max-width: 768px) {
-  .container { padding: 20px 24px; margin: 20px auto 40px auto; }
-  .login-container { padding: 25px 30px; max-width: calc(100% - 40px); }
-  .container h2 { font-size: 1.6em; }
-  .login-container h2 { font-size: 1.7em; }
-  .btn, button { height: 40px; line-height: 40px; font-size: 0.85rem; padding: 0 18px; }
-  .card .card-content { padding: 18px 20px; }
-  .card .card-title { padding: 14px 20px; font-size: 1.1rem; margin: -19px -21px 18px -21px;}
-  .input-field { margin-bottom: 2.6rem; }
-  .input-field .error-message { bottom: -1.8rem; }
+  .container { padding: 20px 25px; margin: 20px auto 30px auto; }
+  .login-container { padding: 30px; max-width: calc(100% - 40px); }
+  .container h2 { font-size: 1.5em; }
+  .login-container h2 { font-size: 1.6em; }
+  .btn, button { height: 38px; line-height: 38px; font-size: 0.8rem; padding: 0 16px; }
+  .card .card-content { padding: 20px; }
+  .card .card-title { padding: 15px 20px; font-size: 1.05rem; margin: -21px -21px 20px -21px;}
+  .input-field { margin-bottom: 2.8rem; } /* Ensure enough space on mobile */
+  .input-field .error-message { top: calc(var(--input-height) + 3px); font-size: 0.65rem; }
 }
 
 @media (max-width: 480px) {
   body { padding: 10px; }
-  .container, .login-container { padding: 20px; max-width: calc(100% - 20px); margin: 15px auto 30px auto; }
-  .container h2 { font-size: 1.4em; }
-  .login-container h2 { font-size: 1.5em; }
-  .input-field label { font-size: 0.9rem; top: 0.75rem; }
-  .input-field .prefix ~ label { left: 2.5rem; }
+  .container, .login-container { padding: 20px 15px; max-width: calc(100% - 20px); margin: 15px auto 25px auto; }
+  .container h2 { font-size: 1.3em; }
+  .login-container h2 { font-size: 1.4em; }
+  .input-field label { font-size: 0.85rem; top: 0.85rem; }
+  .input-field .prefix ~ label { left: 2.6rem; }
   .input-field input:focus + label,
   .input-field label.active {
-    transform: translateY(-130%) scale(0.75);
+    transform: translateY(-120%) scale(0.75);
   }
-   .login-container .input-field label { left: 2.5rem; }
+   .login-container .input-field label { left: 2.6rem; }
   .login-container .input-field input:focus + label,
   .login-container .input-field label.active {
-    transform: translateY(-140%) translateX(-2.5rem) scale(0.75);
+    transform: translateY(-135%) translateX(-2.6rem) scale(0.75);
   }
-  .login-container .prefix { font-size: 1.5rem; top: calc( (var(--input-height) - 1.5rem) / 2 ); width: 2.5rem;}
-  .footer-info { font-size: 0.8em; padding: 20px 15px; }
-  .primary-submit-btn { margin-top: 20px; }
-  .input-field { margin-bottom: 2.5rem; } /* Slightly less margin on smallest screens */
-  .input-field .error-message { bottom: -1.7rem; font-size: 0.7rem; }
+  .login-container .prefix { font-size: 1.4rem; top: calc( (var(--input-height) - 1.4rem) / 2 ); width: 2.6rem;}
+  .footer-info { font-size: 0.75em; padding: 15px; }
+  .primary-submit-btn { margin-top: 15px; }
+  .input-field { margin-bottom: 2.6rem; }
+  .input-field .error-message { top: calc(var(--input-height) + 2px); font-size: 0.65rem; }
 }
 
 /* Ensure Select2 dropdowns are not cut off */
