@@ -1,0 +1,521 @@
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+
+/* --- Global Styles & Resets --- */
+:root {
+  --primary-color: #3f51b5; /* Material Indigo */
+  --primary-dark-color: #303f9f;
+  --accent-color: #ff4081; /* Material Pink */
+  --error-color: #f44336; /* Material Red */
+  --success-color: #4caf50; /* Material Green */
+  --text-color: #424242;
+  --label-color: #757575; /* Slightly darker grey for labels */
+  --border-color: #e0e0e0;
+  --background-light: #f5f5f5;
+  --white: #ffffff;
+  --card-shadow: 0 2px 4px rgba(0,0,0,0.1), 0 1px 6px rgba(0,0,0,0.08);
+  --card-hover-shadow: 0 5px 15px rgba(0,0,0,0.12), 0 3px 8px rgba(0,0,0,0.1);
+  --border-radius: 6px;
+}
+
+body {
+  font-family: 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); /* New softer gradient */
+  margin: 0;
+  padding: 20px;
+  line-height: 1.6;
+  color: var(--text-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  flex-direction: column;
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* --- Login Page Specific --- */
+.login-page-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: calc(100vh - 100px); /* Adjust if footer height changes */
+}
+
+.login-container {
+  background-color: var(--white);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  border-radius: var(--border-radius);
+  width: 100%;
+  max-width: 420px;
+  padding: 30px 40px;
+  animation: fadeInUp 0.7s ease-out forwards;
+  text-align: center;
+  border-top: 5px solid var(--primary-color);
+}
+
+.login-header {
+  margin-bottom: 25px;
+}
+.login-icon {
+  font-size: 48px;
+  color: var(--primary-color);
+  margin-bottom: 10px;
+}
+.login-container h2 {
+  color: var(--primary-dark-color);
+  margin-bottom: 0;
+  font-size: 1.8em;
+  font-weight: 500;
+}
+.login-container .input-field label {
+  left: 2.8rem; /* Adjust for icon */
+}
+.login-container .input-field input:focus + label,
+.login-container .input-field label.active {
+  transform: translateY(-140%) translateX(-2.8rem) scale(0.8); /* Adjust for icon */
+}
+
+.login-btn {
+  width: 100%;
+  margin-top: 20px;
+  background-color: var(--primary-color);
+}
+.login-btn:hover {
+  background-color: var(--primary-dark-color);
+}
+
+
+/* --- Main Form Container --- */
+.container {
+  background-color: var(--white);
+  box-shadow: var(--card-shadow);
+  border-radius: var(--border-radius);
+  width: 100%;
+  max-width: 750px;
+  padding: 24px 32px;
+  margin: 20px auto 40px auto;
+  transition: all 0.3s ease-out;
+}
+.form-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--border-color);
+}
+.container h2 {
+  text-align: left;
+  color: var(--primary-dark-color);
+  margin: 0; /* Removed bottom margin */
+  font-size: 1.7em;
+  font-weight: 500;
+}
+.logged-in-user {
+    font-size: 0.9em;
+    color: var(--label-color);
+}
+
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- Cards --- */
+.card {
+  background-color: var(--white);
+  border-radius: var(--border-radius);
+  box-shadow: var(--card-shadow);
+  margin-bottom: 24px;
+  transition: box-shadow 0.3s cubic-bezier(.25,.8,.25,1);
+  overflow: hidden; /* Important for consistent look */
+}
+.card:hover {
+  box-shadow: var(--card-hover-shadow);
+}
+.card .card-content {
+  padding: 20px 24px; /* Slightly more padding */
+}
+.card .card-title {
+  font-size: 1.2rem; /* Slightly smaller */
+  font-weight: 500;
+  color: var(--primary-color);
+  margin: -20px -24px 20px -24px; /* Extend to edges */
+  padding: 15px 24px;
+  border-bottom: 1px solid var(--border-color);
+  background-color: #f9faff; /* Very light blue tint for title background */
+  display: flex;
+  justify-content: space-between; /* For remove button */
+  align-items: center;
+}
+.event-card .card-title .remove-event-btn {
+    margin: 0; /* Reset margin as it's flex-aligned */
+}
+
+
+/* --- Input Fields (Material Design Inspired) --- */
+.input-field {
+  position: relative;
+  margin-top: 1.2rem;
+  margin-bottom: 2.2rem; /* Increased bottom margin for error message */
+}
+.input-field .prefix {
+    position: absolute;
+    width: 3rem;
+    font-size: 1.8rem; /* Icon size */
+    top: 0.5rem;
+    left: 0;
+    color: var(--label-color);
+    transition: color .2s;
+}
+.input-field input:focus ~ .prefix {
+    color: var(--primary-color);
+}
+
+
+.input-field input[type="text"],
+.input-field input[type="password"],
+.input-field input[type="datetime-local"],
+.input-field input[type="number"],
+.input-field input[type="tel"],
+.input-field textarea {
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid var(--border-color);
+  border-radius: 0;
+  outline: none;
+  height: 2.5rem; /* Adjusted height */
+  width: 100%;
+  font-size: 1rem;
+  margin: 0;
+  padding: 0.5rem 0; /* Padding for text alignment */
+  box-shadow: none;
+  box-sizing: border-box; /* Changed to border-box for easier sizing */
+  transition: border-color 0.3s, box-shadow 0.3s;
+  color: var(--text-color);
+}
+.input-field input[type="text"]:not(.browser-default):focus:not([readonly]),
+.input-field input[type="password"]:not(.browser-default):focus:not([readonly]),
+.input-field input[type="datetime-local"]:not(.browser-default):focus:not([readonly]),
+.input-field input[type="number"]:not(.browser-default):focus:not([readonly]),
+.input-field input[type="tel"]:not(.browser-default):focus:not([readonly]) {
+  border-bottom: 2px solid var(--primary-color);
+  box-shadow: 0 1px 0 0 var(--primary-color);
+}
+
+/* Input with prefix */
+.input-field input[type="text"] ~ .prefix ~ label,
+.input-field input[type="password"] ~ .prefix ~ label {
+    left: 3rem; /* Adjust if you have prefix icons */
+}
+.input-field input[type="text"] ~ .prefix ~ input,
+.input-field input[type="password"] ~ .prefix ~ input {
+    width: calc(100% - 3rem);
+    margin-left: 3rem;
+}
+
+
+.input-field input[type="datetime-local"] {
+    color: var(--text-color); /* Ensure text is visible */
+}
+.input-field input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+    filter: invert(30%) sepia(10%) saturate(1000%) hue-rotate(200deg); /* Colorize icon slightly */
+}
+.input-field input[type="datetime-local"]::-webkit-calendar-picker-indicator:hover {
+    opacity: 1;
+}
+
+.input-field label {
+  color: var(--label-color);
+  position: absolute;
+  top: 0.6rem; /* Adjusted for new input height */
+  left: 0; /* Default for no prefix */
+  font-size: 1rem;
+  cursor: text;
+  transition: transform 0.2s ease-out, color 0.2s ease-out, font-size 0.2s ease-out;
+  transform-origin: 0 0;
+  pointer-events: none;
+}
+
+.input-field input:focus + label,
+.input-field textarea:focus + label,
+.input-field label.active {
+  transform: translateY(-125%) scale(0.85); /* Fine-tuned transform */
+  color: var(--primary-color);
+}
+.input-field label.select-label.active { /* Specific for select labels */
+  transform: translateY(-125%) scale(0.85);
+}
+
+
+/* Validation States */
+.input-field input.invalid,
+.input-field textarea.invalid {
+  border-bottom: 2px solid var(--error-color);
+  box-shadow: 0 1px 0 0 var(--error-color);
+}
+.input-field input.invalid + label,
+.input-field textarea.invalid + label,
+.input-field input.invalid ~ .prefix { /* Color prefix on error */
+  color: var(--error-color);
+}
+
+.input-field .error-message {
+  display: block; /* Changed to block to take space */
+  visibility: hidden; /* Hidden by default */
+  opacity: 0;
+  color: var(--error-color);
+  font-size: 0.8rem;
+  position: absolute;
+  bottom: -1.6rem; /* Position below the input with space */
+  left: 0;
+  transition: opacity 0.2s ease-out, visibility 0.2s ease-out;
+  padding-top: 2px; /* Small space from input bottom line */
+}
+.input-field .error-message:empty {
+    display: none; /* Hide if empty to not take space */
+}
+.input-field .error-message:not(:empty) {
+    visibility: visible;
+    opacity: 1;
+}
+
+
+/* Select2 Material Styling */
+.input-field .select2-container .select2-selection--single {
+  height: 2.6rem; /* Match input height */
+  border: none;
+  border-bottom: 1px solid var(--border-color);
+  border-radius: 0;
+  background-color: transparent;
+  padding-left: 0;
+  display: flex; /* For vertical alignment */
+  align-items: center; /* For vertical alignment */
+}
+.input-field .select2-container--default .select2-selection--single .select2-selection__rendered {
+  color: var(--text-color);
+  line-height: normal; /* Remove fixed line height */
+  padding-right: 20px;
+  padding-left: 0; /* Remove Select2 default padding */
+}
+.input-field .select2-container--default .select2-selection--single .select2-selection__arrow {
+  height: calc(2.6rem - 1px);
+  right: 0;
+  top: 0;
+}
+.input-field .select2-container--default.select2-container--open .select2-selection--single,
+.input-field .select2-container--default .select2-selection--single:focus {
+  border-bottom: 2px solid var(--primary-color);
+  box-shadow: 0 1px 0 0 var(--primary-color);
+}
+.input-field .select2-container .select2-selection--single.invalid-select2 {
+    border-bottom: 2px solid var(--error-color) !important;
+    box-shadow: 0 1px 0 0 var(--error-color) !important;
+}
+.select2-dropdown {
+  border: 1px solid var(--border-color);
+  border-radius: 0 0 var(--border-radius) var(--border-radius);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  z-index: 1051; /* Ensure dropdown is above other elements */
+}
+.select2-results__option--highlighted[aria-selected] {
+  background-color: var(--primary-color);
+  color: var(--white);
+}
+.select2-search--dropdown .select2-search__field {
+    padding: 8px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+}
+
+
+/* --- Buttons --- */
+.btn, button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: var(--white);
+  background-color: var(--primary-color);
+  text-align: center;
+  letter-spacing: .5px;
+  transition: background-color .2s ease-out, box-shadow .2s ease-out, transform .1s ease-out;
+  cursor: pointer;
+  border: none;
+  border-radius: var(--border-radius);
+  padding: 0 20px; /* Increased padding */
+  height: 40px; /* Increased height */
+  line-height: 40px;
+  font-size: 14px;
+  font-weight: 500;
+  text-transform: uppercase;
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
+  outline: 0;
+  margin: 10px 5px;
+}
+.btn:hover, button:hover {
+  background-color: var(--primary-dark-color);
+  box-shadow: 0 3px 3px 0 rgba(0,0,0,0.14), 0 1px 7px 0 rgba(0,0,0,0.12), 0 3px 1px -1px rgba(0,0,0,0.2);
+}
+.btn:active, button:active {
+    background-color: #283593; /* Even darker for active */
+    box-shadow: 0 5px 5px -3px rgba(0,0,0,0.2), 0 8px 10px 1px rgba(0,0,0,0.14), 0 3px 14px 2px rgba(0,0,0,0.12);
+    transform: translateY(1px);
+}
+.btn:disabled, button:disabled {
+  background-color: #bdbdbd !important;
+  box-shadow: none !important;
+  color: #757575 !important;
+  cursor: not-allowed;
+}
+
+.btn .material-icons {
+  font-size: 18px;
+  line-height: inherit;
+}
+.btn .material-icons.left { margin-right: 8px; }
+.btn .material-icons.right { margin-left: 8px; }
+
+.add-event-wrapper {
+    text-align: right; /* Aligns button to the right */
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.add-button {
+  background-color: var(--success-color);
+}
+.add-button:hover {
+  background-color: #388e3c; /* Darker Green */
+}
+.remove-event-btn {
+  background-color: var(--error-color);
+  height: 32px;
+  width: 32px;
+  padding: 0;
+  border-radius: 50%;
+  line-height: 32px;
+  box-shadow: var(--card-shadow);
+}
+.remove-event-btn:hover {
+  background-color: #d32f2f; /* Darker Red */
+}
+.remove-event-btn i { font-size: 20px; }
+
+.primary-submit-btn {
+    min-width: 150px;
+    margin-top: 25px;
+    width: 100%; /* Full width on smaller screens */
+}
+@media (min-width: 600px) {
+    .primary-submit-btn {
+        width: auto; /* Auto width on larger screens */
+    }
+}
+
+
+/* --- Messages & Loaders --- */
+.login-message, .submission-status-message {
+  margin-top: 20px;
+  padding: 12px 15px;
+  border-radius: var(--border-radius);
+  font-weight: 500;
+  text-align: center;
+  animation: fadeIn 0.5s ease-out;
+  font-size: 0.9em;
+  border-width: 1px;
+  border-style: solid;
+}
+.login-message.success, .submission-status-message.success {
+  color: #1b5e20; background-color: #c8e6c9; border-color: #a5d6a7;
+}
+.login-message.error, .submission-status-message.error {
+  color: #b71c1c; background-color: #ffcdd2; border-color: #ef9a9a;
+}
+
+.progress-bar {
+  position: relative;
+  height: 5px;
+  display: block;
+  width: 100%;
+  background-color: #c5cae9;
+  border-radius: 3px;
+  margin: 1.5rem 0;
+  overflow: hidden;
+}
+.progress-bar .indeterminate { background-color: var(--primary-color); }
+.progress-bar .indeterminate:before {
+  content: ''; position: absolute; background-color: inherit; top: 0; left: 0; bottom: 0; will-change: left, right;
+  animation: indeterminate 2.1s cubic-bezier(0.65, 0.815, 0.735, 0.395) infinite;
+}
+.progress-bar .indeterminate:after {
+  content: ''; position: absolute; background-color: inherit; top: 0; left: 0; bottom: 0; will-change: left, right;
+  animation: indeterminate-short 2.1s cubic-bezier(0.165, 0.84, 0.44, 1) infinite; animation-delay: 1.15s;
+}
+@keyframes indeterminate { 0% { left: -35%; right: 100%; } 60% { left: 100%; right: -90%; } 100% { left: 100%; right: -90%; } }
+@keyframes indeterminate-short { 0% { left: -200%; right: 100%; } 60% { left: 107%; right: -8%; } 100% { left: 107%; right: -8%; } }
+
+.conditional-section {
+    padding-top: 10px; /* Add some space when sections appear */
+}
+
+/* --- Footer --- */
+.footer-info {
+  text-align: center;
+  margin-top: auto; /* Pushes footer to bottom if content is short */
+  padding: 20px;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.9em;
+  width: 100%;
+}
+.footer-info strong { color: var(--white); }
+.footer-info small { display: block; margin-top: 4px; color: rgba(255, 255, 255, 0.75); font-size: 0.85em; }
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 768px) {
+  .container { padding: 20px 24px; }
+  .login-container { padding: 24px 30px; }
+  .container h2 { font-size: 1.5em; }
+  .login-container h2 { font-size: 1.6em; }
+  .btn, button { height: 38px; line-height: 38px; font-size: 13px; padding: 0 16px; }
+  .card .card-content { padding: 16px; }
+  .card .card-title { padding: 12px 16px; font-size: 1.1rem; margin: -16px -16px 16px -16px;}
+}
+
+@media (max-width: 480px) {
+  body { padding: 10px; }
+  .container, .login-container { padding: 16px; max-width: calc(100% - 20px); margin-left:10px; margin-right:10px; }
+  .container h2 { font-size: 1.3em; }
+  .login-container h2 { font-size: 1.4em; }
+  .input-field label { font-size: 0.95rem; }
+  .input-field input:focus + label,
+  .input-field label.active {
+    transform: translateY(-120%) scale(0.8);
+  }
+  .login-container .input-field label { left: 0.5rem; } /* Adjust for no icon on small screens or if you hide them */
+  .login-container .input-field input:focus + label,
+  .login-container .input-field label.active {
+    transform: translateY(-120%) translateX(0) scale(0.8);
+  }
+  .login-container .prefix { display: none; } /* Hide prefix icons on very small screens */
+  .login-container .input-field input[type="text"],
+  .login-container .input-field input[type="password"] {
+      width: 100%; margin-left: 0;
+  }
+
+  .footer-info { font-size: 0.8em; }
+}
+
+/* Ensure Select2 dropdowns are not cut off */
+.select2-container { width: 100% !important; }
+select { /* Hide original ugly select arrows */
+  -webkit-appearance: none; -moz-appearance: none; appearance: none; background-image: none !important;
+}
+
