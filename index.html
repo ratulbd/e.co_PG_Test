@@ -828,7 +828,7 @@
     async function fetchEmployeeAndSiteDataForReport() {
         try {
             console.log("Fetching employee and site data for report dropdowns...");
-            const response = await fetch('https://script.google.com/macros/s/AKfycbyn_zk2BaPTswVWHEDSXhCZkB5NisS9-3mx2uT807p7Tyn5oVAZ5UWUa-oQ/exec?action=getEmployeeAndSiteData'); // Use the correct URL for report
+            const response = await fetch('https://script.google.com/macros/s/AKfycbyn_zk2BaPTswVWHEDSXhCZkB5NisS9-3mx2uT807p7Tyn5oVAZ5UWpUsFKhy-rP4Lf/exec?action=getEmployeeAndSiteData'); // Use the correct URL for report
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
@@ -888,7 +888,7 @@
         };
 
         // Example fetch for report data (assuming a different Google Script URL or action)
-        fetch('https://script.google.com/macros/s/AKfycbyn_zk2BaPTswVWHEDSXhCZkB5NisS9-3mx2uT807p7Tyn5oVAZ5UWUa-oQ/exec', { // This URL should be distinct if it fetches report data
+        fetch('https://script.google.com/macros/s/AKfycbyn_zk2BaPTswVWHEDSXhCZkB5NisS9-3mx2uT807p7Tyn5oVAZ5UWpUsFKhy-rP4Lf/exec', { // This URL should be distinct if it fetches report data
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
