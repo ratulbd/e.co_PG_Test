@@ -43,6 +43,7 @@
     <div class="form-header">
         <h2>E.CO PG Run Data Collection Form-MPL</h2>
         <span id="loggedInUserDisplay" class="logged-in-user"></span>
+        <button type="button" id="showReportTabBtn" class="btn waves-effect waves-light secondary-btn">View Report</button>
     </div>
     <form id="pgForm" novalidate>
       <div class="card">
@@ -144,6 +145,76 @@
         <div id="submissionStatus" class="submission-status-message" style="display: none;"></div>
     </form>
   </div>
+</div>
+
+<div id="reportContainer" style="display: none;">
+    <div class="container">
+        <div class="form-header">
+            <h2>E.CO PG Run Data Report - MPL</h2>
+            <span id="loggedInUserReportDisplay" class="logged-in-user"></span>
+            <button type="button" id="showEntryFormBtn" class="btn waves-effect waves-light secondary-btn">Back to Entry</button>
+        </div>
+        <div class="card">
+            <div class="card-content">
+                <div class="input-field">
+                    <input type="text" id="reportTtNumber" name="reportTtNumber" maxlength="7" inputmode="numeric">
+                    <label for="reportTtNumber">TT Number (Optional)</label>
+                    <span class="error-message" id="reportTtNumber-error"></span>
+                </div>
+                <div class="input-field">
+                    <select id="reportSiteDropdown" name="reportSite"></select>
+                    <label for="reportSiteDropdown" class="active select-label">Select Site (Optional)</label>
+                    <span class="error-message" id="reportSiteDropdown-error"></span>
+                </div>
+                <div class="input-field">
+                    <input type="date" id="reportStartDate" name="reportStartDate" class="input-material">
+                    <label for="reportStartDate" class="active">PG Run Start Date (Optional)</label>
+                    <span class="error-message" id="reportStartDate-error"></span>
+                </div>
+                <div class="input-field">
+                    <input type="date" id="reportEndDate" name="reportEndDate" class="input-material">
+                    <label for="reportEndDate" class="active">PG Run End Date (Optional)</label>
+                    <span class="error-message" id="reportEndDate-error"></span>
+                </div>
+                <button type="button" id="generateReportBtn" class="btn waves-effect waves-light primary-submit-btn"><i class="material-icons left">receipt</i>Generate Report</button>
+            </div>
+        </div>
+
+        <div id="reportResults" class="card" style="display: none;">
+            <div class="card-content">
+                <h5>Report Results</h5>
+                <div class="progress-bar loading" id="reportLoading" style="display: none;">
+                    <div class="indeterminate"></div>
+                </div>
+                <div id="reportStatus" class="submission-status-message" style="display: none;"></div>
+                <div class="report-table-container">
+                    <table id="reportTable" class="highlight responsive-table">
+                        <thead>
+                            <tr>
+                                <th>TT Number</th>
+                                <th>Operator Name</th>
+                                <th>Site</th>
+                                <th>PG Operator</th>
+                                <th>Team Leader</th>
+                                <th>Select Option</th>
+                                <th>Site Attend</th>
+                                <th>Site Attend Date & Time</th>
+                                <th>PG Start Date & Time</th>
+                                <th>PG Stop Date & Time</th>
+                                <th>Event Type</th>
+                                <th>Fuel Used From</th>
+                                <th>EntryBy</th>
+                                <th>Timestamp</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            </tbody>
+                    </table>
+                </div>
+                <p id="noReportData" style="display: none; text-align: center; padding: 20px;">No data found for the selected filters.</p>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div class="footer-info">
@@ -494,6 +565,7 @@
     async function initializeForm() {
         console.log("Initializing form features..."); // Matches example log
         $('#loggedInUserDisplay').text(`User: ${loggedInUsername}`);
+        $('#loggedInUserReportDisplay').text(`User: ${loggedInUsername}`); // Set for report tab too
         $('#operatorName, #selectOption, #siteAttend').each(function() {
              $(this).select2({
                  placeholder: $(this).find('option[disabled][selected]').text() || 'Select...',
@@ -511,7 +583,8 @@
             await Promise.all([
                 fetchAndPopulateDropdown('siteDropdown', 'Sites', 'Site_Code', 'Select Site Code'),
                 fetchAndPopulateDropdown('pgOperatorDropdown', 'Employees', 'Employee_Code', 'Select PG Operator'),
-                fetchAndPopulateDropdown('teamLeaderDropdown', 'Employees', 'Employee_Code', 'Select Team Leader')
+                fetchAndPopulateDropdown('teamLeaderDropdown', 'Employees', 'Employee_Code', 'Select Team Leader'),
+                fetchAndPopulateDropdown('reportSiteDropdown', 'Sites', 'Site_Code', 'Select Site Code') // For report tab
             ]);
             console.log("Dropdown data fetch complete."); // Matches example log
         } catch (error) {
@@ -521,6 +594,9 @@
         }
         
         $('#ttNumber').on('blur', function() { 
+            let value = $(this).val();
+            value = value.replace(/[^0-9]/g, '');
+            $(this).val(value);
             const ttVal = $(this).val().trim();
             const currentSelectOption = $('#selectOption').val();
             if (currentSelectOption !== 'PG Run') {
@@ -707,79 +783,141 @@
          });
        });
         M_updateTextFields(); 
-    }
 
-    function displayLoginError(fieldId, message) {
-        const errorSpan = $(`#${fieldId}-error`);
-        const fieldElement = $(`#${fieldId}`);
-        const loginStatusDiv = $('#login-status');
-
-        if (errorSpan.length && fieldId !== 'login-status') { 
-            errorSpan.text(message || '').toggle(!!message);
-            fieldElement.toggleClass('invalid', !!message);
-        } else if (fieldId === 'login-status') { 
-            loginStatusDiv.text(message || '')
-                          .removeClass('success error') 
-                          .addClass(message.toLowerCase().includes('fail') || message.toLowerCase().includes('error') ? 'error' : (message.toLowerCase().includes('success') ? 'success' : ''))
-                          .toggle(!!message);
-        }
-        M_updateTextFields();
-    }
-
-    $('#loginForm').submit(function(event) {
-        event.preventDefault();
-        displayLoginError('username', '');
-        displayLoginError('password', '');
-        displayLoginError('login-status', '');
-
-        const username = $('#username').val().trim();
-        const password = $('#password').val().trim();
-        let loginValid = true;
-        if (!username) { displayLoginError('username', 'Username is required.'); loginValid = false;}
-        if (!password) { displayLoginError('password', 'Password is required.'); loginValid = false;}
-        
-        if (!loginValid) {
-            return;
-        }
-
-
-        displayLoginError('login-status', 'Logging in...');
-        $(this).find('button[type="submit"]').prop('disabled', true);
-
-
-        fetch('/.netlify/functions/proxy', { 
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ login: true, username: username, password: password })
-        })
-        .then(response => response.json().then(data => ({ ok: response.ok, data })))
-        .then(({ ok, data }) => {
-            $(this).find('button[type="submit"]').prop('disabled', false);
-            if (!ok || !data.success) {
-                throw new Error((data && data.error) || 'Invalid username or password.');
-            }
-            displayLoginError('login-status', 'Login successful!');
-            loggedInUsername = username;
-            setTimeout(() => { 
-                $('#loginContainer').parent('.login-page-wrapper').fadeOut(400, function() {
-                    $('#formContainer').fadeIn(400);
-                    initializeForm();
-                    $('html, body').animate({ scrollTop: 0 }, 'fast');
-                });
-            }, 1000);
-        })
-        .catch(error => {
-            $(this).find('button[type="submit"]').prop('disabled', false);
-            displayLoginError('login-status', 'Login failed: ' + error.message);
-            $('#password').val(''); 
+    // Report Tab Functionality
+    $('#showReportTabBtn').on('click', function() {
+        $('#formContainer').fadeOut(300, function() {
+            $('#reportContainer').fadeIn(300);
+            $('#reportSiteDropdown').select2({ // Ensure select2 is initialized for the report dropdown
+                placeholder: 'Select Site Code',
+                allowClear: true,
+                dropdownParent: $('#reportSiteDropdown').closest('.input-field')
+            });
+            $('#reportTtNumber').val(''); // Clear previous filters
+            $('#reportStartDate').val('');
+            $('#reportEndDate').val('');
+            $('#reportSiteDropdown').val(null).trigger('change.select2');
+            $('#reportResults').hide();
+            $('#reportStatus').hide();
+            $('#reportLoading').hide();
+            $('#reportTable tbody').empty();
+            $('#noReportData').hide();
             M_updateTextFields();
-            console.error("Login Fetch Error:", error);
+            $('html, body').animate({ scrollTop: 0 }, 'fast');
         });
     });
 
-    $('#loginContainer input').on('focus', function() { $(this).siblings('label').addClass('active'); });
-    $('#loginContainer input').on('blur', function() { if ($(this).val() === '') $(this).siblings('label').removeClass('active');});
-    
+    $('#showEntryFormBtn').on('click', function() {
+        $('#reportContainer').fadeOut(300, function() {
+            $('#formContainer').fadeIn(300);
+            M_updateTextFields();
+            $('html, body').animate({ scrollTop: 0 }, 'fast');
+        });
+    });
+
+    $('#generateReportBtn').on('click', async function() {
+        const ttNumber = $('#reportTtNumber').val().trim();
+        const site = $('#reportSiteDropdown').val();
+        const startDate = $('#reportStartDate').val();
+        const endDate = $('#reportEndDate').val();
+
+        // Basic validation for dates
+        displayError('reportStartDate', '');
+        displayError('reportEndDate', '');
+        if (startDate && endDate && new Date(startDate) > new Date(endDate)) {
+            displayError('reportEndDate', 'End Date cannot be before Start Date.');
+            displayMessage('reportStatus', 'Please correct the date range.', true);
+            return;
+        }
+
+        $('#reportLoading').show();
+        $('#reportStatus').hide();
+        $('#reportResults').hide();
+        $('#reportTable tbody').empty();
+        $('#noReportData').hide();
+
+        try {
+            const response = await fetch('/.netlify/functions/proxy', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    type: 'getReportData',
+                    username: loggedInUsername,
+                    ttNumber: ttNumber,
+                    site: site,
+                    startDate: startDate,
+                    endDate: endDate
+                })
+            });
+
+            if (!response.ok) throw new Error(`Fetch failed: ${response.status}`);
+            const result = await response.json();
+
+            if (result && result.success && Array.isArray(result.data)) {
+                if (result.data.length > 0) {
+                    populateReportTable(result.data);
+                    $('#reportResults').slideDown();
+                    $('#noReportData').hide();
+                    displayMessage('reportStatus', 'Report generated successfully!', false);
+                } else {
+                    $('#reportResults').slideDown();
+                    $('#noReportData').show();
+                    displayMessage('reportStatus', 'No data found matching your criteria.', false);
+                }
+            } else {
+                throw new Error(result.error || 'Invalid data format from server.');
+            }
+        } catch (error) {
+            console.error("Report Fetch Error:", error);
+            displayMessage('reportStatus', 'Failed to generate report: ' + error.message, true);
+            $('#reportResults').hide();
+        } finally {
+            $('#reportLoading').hide();
+        }
+    });
+
+    function populateReportTable(data) {
+        const tbody = $('#reportTable tbody');
+        tbody.empty(); // Clear existing rows
+
+        data.forEach(row => {
+            const tr = $('<tr>');
+            // Ensure the order matches your table headers and the data structure from Google Apps Script
+            tr.append($('<td>').text(row['TT Number'] || ''));
+            tr.append($('<td>').text(row['Operator Name'] || ''));
+            tr.append($('<td>').text(row['Site'] || ''));
+            tr.append($('<td>').text(row['PG Operator'] || ''));
+            tr.append($('<td>').text(row['Team Leader'] || ''));
+            tr.append($('<td>').text(row['Select Option'] || ''));
+            tr.append($('<td>').text(row['Site Attend'] || ''));
+            tr.append($('<td>').text(row['Site Attend Date & Time'] || ''));
+            tr.append($('<td>').text(row['PG Start Date & Time'] || ''));
+            tr.append($('<td>').text(row['PG Stop Date & Time'] || ''));
+            tr.append($('<td>').text(row['Event Type'] || ''));
+            tr.append($('<td>').text(row['Fuel Used From'] || ''));
+            tr.append($('<td>').text(row['EntryBy'] || ''));
+            tr.append($('<td>').text(row['Timestamp'] || ''));
+            tbody.append(tr);
+        });
+    }
+
+    $('#reportTtNumber').on('input', function() {
+        let value = $(this).val();
+        value = value.replace(/[^0-9]/g, ''); 
+        if (value.length > 7) {
+            value = value.slice(0, 7); 
+        }
+        $(this).val(value);
+        displayError('reportTtNumber', ''); 
+    });
+
+    $('#reportTtNumber, #reportSiteDropdown, #reportStartDate, #reportEndDate').on('change blur', function() {
+        displayError('reportStartDate', ''); // Clear date errors on change
+        displayError('reportEndDate', '');
+        displayError('reportTtNumber', '');
+    });
+
+
     $('#formContainer').hide();
     $('.login-page-wrapper').show(); 
     M_updateTextFields(); 

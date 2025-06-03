@@ -573,3 +573,71 @@ body {
 select { /* Hide original ugly select arrows */
   -webkit-appearance: none; -moz-appearance: none; appearance: none; background-image: none !important;
 }
+
+#reportContainer {
+    padding: 20px;
+    background-color: #f8f9fa; /* Light background for the report area */
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-top: 20px;
+}
+
+#reportResults {
+    margin-top: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.report-table-container {
+    overflow-x: auto; /* Makes table scrollable horizontally if content is too wide */
+    margin-top: 20px;
+}
+
+#reportTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+#reportTable th, #reportTable td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    white-space: nowrap; /* Prevent text wrapping in table cells */
+}
+
+#reportTable th {
+    background-color: #f2f2f2;
+    font-weight: 500;
+    color: #333;
+}
+
+#reportTable tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+#reportTable tbody tr:hover {
+    background-color: #e8e8e8;
+}
+
+.secondary-btn {
+    background-color: #6c757d; /* A neutral color */
+    margin-left: 10px;
+}
+
+.secondary-btn:hover {
+    background-color: #5a6268;
+}
+
+/* Ensure material icons are correctly aligned in buttons */
+.btn i.left {
+    margin-right: 8px;
+    line-height: inherit; /* Inherit line-height from button */
+}
+
+.btn i.right {
+    margin-left: 8px;
+    line-height: inherit;
+}
