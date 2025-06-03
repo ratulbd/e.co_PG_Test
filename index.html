@@ -44,7 +44,7 @@
     <div class="form-header">
         <h2>E.CO PG Run Data Collection Form-MPL</h2>
         <span id="loggedInUserDisplay" class="logged-in-user"></span>
-        <button type="button" id="viewReportBtn" class="btn waves-effect waves-light secondary-btn"><i class="material-icons left">bar_chart</i>View Reports</button>
+        <button type="button" id="viewReportBtn" class="btn waves-effect waves-light secondary-btn"><i class="material-icons left">bar_chart</i>Report</button>
     </div>
     <form id="pgForm" novalidate>
       <div class="card">
@@ -162,6 +162,11 @@
             <div class="input-field">
                 <input type="date" id="reportEndDate" name="reportEndDate" class="input-material">
                 <label for="reportEndDate" class="active">End Date</label>
+            </div>
+            <div class="input-field">
+                <input type="text" id="reportTtNumber" name="reportTtNumber" maxlength="7" inputmode="numeric">
+                <label for="reportTtNumber">TT Number</label>
+                <span class="error-message" id="reportTtNumber-error"></span>
             </div>
             <div class="input-field">
                 <select id="reportOperatorName" name="reportOperatorName">
@@ -320,6 +325,16 @@
         }
         $(this).val(value);
         displayError('ttNumber', '');
+    });
+
+    $('#reportTtNumber').on('input', function() {
+        let value = $(this).val();
+        value = value.replace(/[^0-9]/g, '');
+        if (value.length > 7) {
+            value = value.slice(0, 7);
+        }
+        $(this).val(value);
+        displayError('reportTtNumber', '');
     });
 
 
@@ -856,6 +871,7 @@
     $('#generateReportBtn').on('click', async function() {
         const startDate = $('#reportStartDate').val();
         const endDate = $('#reportEndDate').val();
+        const ttNumberFilter = $('#reportTtNumber').val();
         const operatorName = $('#reportOperatorName').val();
         const site = $('#reportSiteDropdown').val();
         const pgOperator = $('#reportPgOperatorDropdown').val();
@@ -868,7 +884,7 @@
             return;
         }
 
-        console.log('Generating report with criteria:', { startDate, endDate, operatorName, site, pgOperator, teamLeader, selectOption });
+        console.log('Generating report with criteria:', { startDate, endDate, ttNumberFilter, operatorName, site, pgOperator, teamLeader, selectOption });
 
         // Placeholder for fetching report data from backend
         // In a real scenario, this would be an API call to get filtered data
@@ -909,6 +925,28 @@
                     pgEvents: [
                         { pgStart: "2025-05-30T12:00:00.000Z", pgStop: "2025-05-30T14:00:00.000Z", fuelUsedFrom: "Generator Tank" }
                     ]
+                },
+                {
+                    submissionTime: "2025-05-30T15:00:00.000Z",
+                    ttNumber: "8765432",
+                    operatorName: "GP",
+                    site: "Sylhet",
+                    pgOperator: "Rahim",
+                    teamLeader: "Sanaul",
+                    selectOption: "Misscall TT",
+                    siteAttend: "NO"
+                },
+                {
+                    submissionTime: "2025-06-01T09:00:00.000Z",
+                    ttNumber: "9876543",
+                    operatorName: "BL",
+                    site: "Rajshahi",
+                    pgOperator: "Fahim",
+                    teamLeader: "Karim",
+                    selectOption: "PG Run",
+                    pgEvents: [
+                        { pgStart: "2025-06-01T08:00:00.000Z", pgStop: "2025-06-01T09:00:00.000Z", fuelUsedFrom: "External Can" }
+                    ]
                 }
             ].filter(data => {
                 const recordDate = new Date(data.submissionTime).toISOString().slice(0, 10);
@@ -918,8 +956,13 @@
                 const isPgOperatorMatch = (!pgOperator || data.pgOperator === pgOperator);
                 const isTeamLeaderMatch = (!teamLeader || data.teamLeader === teamLeader);
                 const isSelectOptionMatch = (selectOption === 'All' || !selectOption || data.selectOption === selectOption);
+                const isTtNumberMatch = (!ttNumberFilter || data.ttNumber === ttNumberFilter);
 
-                return isDateInRange && isOperatorMatch && isSiteMatch && isPgOperatorMatch && isTeamLeaderMatch && isSelectOptionMatch;
+                // Filter based on loggedInUsername
+                const isUserSpecific = (data.pgOperator === loggedInUsername || data.teamLeader === loggedInUsername);
+
+
+                return isDateInRange && isOperatorMatch && isSiteMatch && isPgOperatorMatch && isTeamLeaderMatch && isSelectOptionMatch && isTtNumberMatch && isUserSpecific;
             });
 
 
