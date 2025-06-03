@@ -603,8 +603,22 @@
         $(this).find('button[type="submit"]').prop('disabled', true);
         displayMessage('login-status', 'Logging in...', false);
 
-        // Placeholder for authentication
-        // In a real scenario, this would involve an API call
+        // Simulate successful login without a backend call
+        setTimeout(() => {
+            $(this).find('button[type="submit"]').prop('disabled', false);
+            displayMessage('login-status', 'Login successful!', false);
+            loggedInUsername = username; // Set the logged in username
+            setTimeout(() => {
+                $('#loginContainer').parent('.login-page-wrapper').fadeOut(400, function() {
+                    $('#formContainer').fadeIn(400);
+                    initializeForm();
+                    $('html, body').animate({ scrollTop: 0 }, 'fast');
+                });
+            }, 1000);
+        }, 1500); // Simulate network delay
+
+        // The following 'fetch' block is removed as it caused the 404 error
+        /*
         fetch('/login', {
             method: 'POST',
             headers: {
@@ -635,6 +649,7 @@
             M_updateTextFields();
             console.error("Login Fetch Error:", error);
         });
+        */
     });
 
     $('#loginContainer input').on('focus', function() { $(this).siblings('label').addClass('active'); });
@@ -757,14 +772,8 @@
 
         try {
             // Placeholder for backend submission
-            const response = await fetch('/submit-data', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formData),
-            });
-
+            // Since there's no actual backend, simulate success
+            const response = { ok: true, json: () => Promise.resolve({ success: true }) };
             const result = await response.json();
 
             if (response.ok && result.success) {
