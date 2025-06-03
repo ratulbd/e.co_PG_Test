@@ -393,7 +393,7 @@
                  displayError('siteAttendDateTime', '');
             }
         } else {
-             displayError('siteAttend', '');
+            displayError('siteAttend', '');
             displayError('siteAttendDateTime', '');
         }
 
@@ -420,331 +420,355 @@
                     if (!fuelUsedFromVal) { displayError(fuelUsedFromId, 'Mandatory.'); allValid = false; currentEventValid = false; } else { displayError(fuelUsedFromId, ''); }
 
                     if (pgStart && pgStop) {
-                         if (pgStop <= pgStart) { displayError(pgStopId, 'Stop time must be after Start time.'); allValid = false; currentEventValid = false; }
-                         if (pgStart > now) { displayError(pgStartId, 'Start time cannot be in the future.'); allValid = false; currentEventValid = false; }
-                         if (pgStop > now) { displayError(pgStopId, 'Stop time cannot be in the future.'); allValid = false; currentEventValid = false; }
-                         if (previousEventStop && pgStart <= previousEventStop) { displayError(pgStartId, `Must be after Event ${index}'s Stop.`); allValid = false; currentEventValid = false; }
+                        if (pgStop <= pgStart) { displayError(pgStopId, 'Stop time must be after Start time.'); allValid = false; currentEventValid = false; }
+                        if (pgStart > now) { displayError(pgStartId, 'Start time cannot be in the future.'); allValid = false; currentEventValid = false; }
+                        if (pgStop > now) { displayError(pgStopId, 'Stop time cannot be in the future.'); allValid = false; currentEventValid = false; }
+                        if (previousEventStop && pgStart <= previousEventStop) { displayError(pgStartId, `Must be after Event ${index}'s Stop.`); allValid = false; currentEventValid = false; }
 
-                         if (currentEventValid) { previousEventStop = pgStop; }
-                         else { previousEventStop = null; }
-                    } else { previousEventStop = null; }
+                        if (currentEventValid) {
+                            previousEventStop = pgStop;
+                        } else {
+                            previousEventStop = null;
+                        }
+                    } else {
+                        previousEventStop = null;
+                    }
                 } else {
-                     displayError(pgStartId, '');
-                     displayError(pgStopId, '');
-                     displayError(fuelUsedFromId, '');
+                    displayError(pgStartId, '');
+                    displayError(pgStopId, '');
+                    displayError(fuelUsedFromId, '');
                 }
             });
         } else {
-             $('#pgEventsContainer .event-card').each(function() {
-                 const eventNumber = $(this).data('event-number');
-                 displayError(`pgStart${eventNumber}`, '');
-                 displayError(`pgStop${eventNumber}`, '');
-                 displayError(`fuelUsedFrom${eventNumber}`, '');
-             });
+            $('#pgEventsContainer .event-card').each(function() {
+                const eventNumber = $(this).data('event-number');
+                displayError(`pgStart${eventNumber}`, '');
+                displayError(`pgStop${eventNumber}`, '');
+                displayError(`fuelUsedFrom${eventNumber}`, '');
+            });
         }
         return allValid;
     }
 
-     function addEventField(eventNumber) {
-         const nowFormatted = getCurrentDateTimeLocal();
-         const suffix = (eventNumber === 1) ? 'st' : (eventNumber === 2) ? 'nd' : (eventNumber === 3) ? 'rd' : 'th';
-         const eventCardHtml = `
+    function addEventField(eventNumber) {
+        const nowFormatted = getCurrentDateTimeLocal();
+        const suffix = (eventNumber === 1) ? 'st' : (eventNumber === 2) ? 'nd' : (eventNumber === 3) ? 'rd' : 'th';
+        const eventCardHtml = `
             <div class="card event-card" data-event-number="${eventNumber}" style="display:none;">
-              <div class="card-content">
-                <span class="card-title">${eventNumber}${suffix} Event
-                    ${eventNumber > 1 ? '<button type="button" class="btn-floating waves-effect waves-light red right remove-event-btn"><i class="material-icons">remove_circle_outline</i></button>' : ''}
-                </span>
-                <div class="input-field">
-                   <input type="datetime-local" id="pgStart${eventNumber}" name="pgStart${eventNumber}" class="input-material" max="${nowFormatted}" />
-                   <label for="pgStart${eventNumber}" class="active">PG Start Date & Time</label>
-                   <span class="error-message" id="pgStart${eventNumber}-error"></span>
+                <div class="card-content">
+                    <span class="card-title">${eventNumber}${suffix} Event ${eventNumber > 1 ? '<button type="button" class="btn-floating waves-effect waves-light red right remove-event-btn"><i class="material-icons">remove_circle_outline</i></button>' : ''} </span>
+                    <div class="input-field">
+                        <input type="datetime-local" id="pgStart${eventNumber}" name="pgStart${eventNumber}" class="input-material" max="${nowFormatted}" />
+                        <label for="pgStart${eventNumber}" class="active">PG Start Date & Time</label>
+                        <span class="error-message" id="pgStart${eventNumber}-error"></span>
+                    </div>
+                    <div class="input-field">
+                        <input type="datetime-local" id="pgStop${eventNumber}" name="pgStop${eventNumber}" class="input-material" max="${nowFormatted}" />
+                        <label for="pgStop${eventNumber}" class="active">PG Stop Date & Time</label>
+                        <span class="error-message" id="pgStop${eventNumber}-error"></span>
+                    </div>
+                    <div class="input-field">
+                        <select id="fuelUsedFrom${eventNumber}" name="fuelUsedFrom${eventNumber}" class="fuel-used-from-dropdown"></select>
+                        <label for="fuelUsedFrom${eventNumber}" class="active select-label">Fuel Used From</label>
+                        <span class="error-message" id="fuelUsedFrom${eventNumber}-error"></span>
+                    </div>
                 </div>
-                <div class="input-field">
-                   <input type="datetime-local" id="pgStop${eventNumber}" name="pgStop${eventNumber}" class="input-material" max="${nowFormatted}" />
-                   <label for="pgStop${eventNumber}" class="active">PG Stop Date & Time</label>
-                   <span class="error-message" id="pgStop${eventNumber}-error"></span>
-                </div>
-                <div class="input-field">
-                   <select id="fuelUsedFrom${eventNumber}" name="fuelUsedFrom${eventNumber}"></select>
-                   <label for="fuelUsedFrom${eventNumber}" class="active select-label">Fuel Used From</label>
-                   <span class="error-message" id="fuelUsedFrom${eventNumber}-error"></span>
-                </div>
-              </div>
-            </div>
-         `;
-         $('#pgEventsContainer').append(eventCardHtml);
-         const newCard = $(`[data-event-number="${eventNumber}"]`);
-         newCard.slideDown(300);
-         eventCount++;
+            </div> `;
+        $('#pgEventsContainer').append(eventCardHtml);
+        const newCard = $(`[data-event-number="${eventNumber}"]`);
+        newCard.slideDown(300, function() {
+            M_updateTextFields();
+            // Populate the new fuel dropdown
+            populateDropdown(`#fuelUsedFrom${eventNumber}`, employeeData.fuelUsedFrom, 'Select Fuel Source');
+            $(`#fuelUsedFrom${eventNumber}`).select2({
+                placeholder: 'Select Fuel Source',
+                allowClear: true
+            });
+        });
+        eventCount++;
+    }
 
-         const eventCard = $(`[data-event-number="${eventNumber}"]`);
-         const newFuelDropdown = $(`#fuelUsedFrom${eventNumber}`);
-         newFuelDropdown.empty().append('<option value="" disabled selected>Select fuel source</option>');
-         employeeData.forEach(item => { if (item) newFuelDropdown.append(new Option(item, item)); });
-         newFuelDropdown.select2({
-             placeholder: 'Select fuel source...',
-             allowClear: true,
-             dropdownParent: eventCard.find('.card-content')
-         }).val(null).trigger('change');
-         M_updateTextFields();
 
-         $(`#pgStart${eventNumber}, #pgStop${eventNumber}, #fuelUsedFrom${eventNumber}`).on('change blur', validateAllConditionalFields);
+    async function fetchEmployeeAndSiteData() {
+        try {
+            console.log("Fetching employee and site data...");
+            const response = await fetch('https://script.google.com/macros/s/AKfycbyn_zk2BaPTswVWHEDSXhCZkB5NisS9-3mx2uT807p7Tyn5oVAZ5UWpUsFKhy-rP4Lf/exec?action=getEmployeeAndSiteData');
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+            console.log("Fetched data:", data);
+            employeeData = data;
 
-         if (eventNumber > 1) {
-             eventCard.find('.remove-event-btn').on('click', function() {
-                 $(this).closest('.event-card').slideUp(300, function() {
-                     $(this).remove();
-                     eventCount--;
-                     updateEventNumbers();
-                     validateAllConditionalFields();
-                     $('#addEventBtn').toggle(eventCount < MAX_EVENTS).css('display', eventCount < MAX_EVENTS ? 'inline-flex' : 'none');
-                 });
-             });
-         }
+            populateDropdown('#siteDropdown', employeeData.sites, 'Select Site');
+            populateDropdown('#pgOperatorDropdown', employeeData.pgOperators, 'Select PG Operator Name');
+            populateDropdown('#teamLeaderDropdown', employeeData.teamLeaders, 'Select Team Leader Name');
 
-         $('#addEventBtn').toggle(eventCount < MAX_EVENTS).css('display', eventCount < MAX_EVENTS ? 'inline-flex' : 'none');
-     }
+            // Populate Fuel Used From dropdown for existing events if any (and future ones)
+            // This needs to be called every time an event card is added or on form initialization
+            $('.fuel-used-from-dropdown').each(function() {
+                populateDropdown(this, employeeData.fuelUsedFrom, 'Select Fuel Source');
+            });
 
-    function updateEventNumbers() {
-        $('#pgEventsContainer .event-card').each(function(index) {
-            const newEventNumber = index + 1;
-            const suffix = (newEventNumber === 1) ? 'st' : (newEventNumber === 2) ? 'nd' : (newEventNumber === 3) ? 'rd' : 'th';
-            const card = $(this);
-            const oldEventNumber = parseInt(card.data('event-number'));
 
-            if (oldEventNumber === newEventNumber) return;
-
-            card.data('event-number', newEventNumber);
-            card.attr('data-event-number', newEventNumber); // Update attribute for selector consistency
-            card.find('.card-title').contents().filter(function() {
-                return this.nodeType === 3;
-            }).first().replaceWith(`${newEventNumber}${suffix} Event`);
-
-            card.find('input, select, label, span.error-message').each(function() {
-                const el = $(this);
-                ['id', 'name', 'for'].forEach(attr => {
-                    const oldVal = el.attr(attr);
-                    if (oldVal && oldVal.includes(oldEventNumber)) {
-                        const newVal = oldVal.replace(new RegExp(oldEventNumber + '(?![0-9])', 'g'), newEventNumber);
-                        el.attr(attr, newVal);
-                    }
+            M_updateTextFields();
+            $('select').each(function() {
+                if ($(this).data('select2')) {
+                    $(this).select2('destroy');
+                }
+                $(this).select2({
+                    placeholder: $(this).find('option:first').text(),
+                    allowClear: true
                 });
             });
 
-            // Reinitialize Select2 after updating IDs for the fuel dropdown
-            const fuelSelect = card.find(`select[id^="fuelUsedFrom"]`);
-            if (fuelSelect.data('select2')) {
-                fuelSelect.select2('destroy');
-            }
-            fuelSelect.select2({
-                placeholder: 'Select fuel source...',
-                allowClear: true,
-                dropdownParent: card.find('.card-content')
+        } catch (error) {
+            console.error("Error fetching employee and site data:", error);
+            displayMessage('submissionStatus', 'Failed to load dropdown data. Please try again.', true);
+        }
+    }
+
+    function populateDropdown(selector, data, defaultOptionText) {
+        const $dropdown = $(selector);
+        $dropdown.empty();
+        $dropdown.append($('<option></option>').attr('value', '').text(defaultOptionText).prop('disabled', true).prop('selected', true));
+        if (data && data.length > 0) {
+            $.each(data, function (i, item) {
+                $dropdown.append($('<option></option>').attr('value', item).text(item));
             });
+        }
+        $dropdown.trigger('change');
+    }
 
-            // Reattach remove button for newEventNumber > 1, remove for newEventNumber = 1
-            const removeBtn = card.find('.remove-event-btn');
-            if (newEventNumber > 1 && !removeBtn.length) {
-                card.find('.card-title').append('<button type="button" class="btn-floating waves-effect waves-light red right remove-event-btn"><i class="material-icons">remove_circle_outline</i></button>');
-                card.find('.remove-event-btn').on('click', function() {
-                    $(this).closest('.event-card').slideUp(300, function() {
-                        $(this).remove();
-                        eventCount--;
-                        updateEventNumbers();
-                        validateAllConditionalFields();
-                        $('#addEventBtn').toggle(eventCount < MAX_EVENTS).css('display', eventCount < MAX_EVENTS ? 'inline-flex' : 'none');
-                    });
-                });
-            } else if (newEventNumber === 1 && removeBtn.length) {
-                removeBtn.remove();
+    function initializeForm() {
+        $('#loggedInUserDisplayForm').text(loggedInUsername);
+        M_updateTextFields(); // Update labels for any pre-filled inputs
+        fetchEmployeeAndSiteData(); // Fetch and populate dropdowns
+
+        // Initialize Select2 for all select elements
+        $('select').each(function() {
+            if ($(this).attr('id') !== 'operatorName' && $(this).attr('id') !== 'reportOperatorName' && $(this).attr('id') !== 'selectOption' && $(this).attr('id') !== 'reportSelectOption' && $(this).attr('id') !== 'siteAttend') {
+              $(this).select2({
+                  placeholder: $(this).find('option:first').text(),
+                  allowClear: true
+              });
             }
         });
-        M_updateTextFields();
     }
 
 
-    async function fetchAndPopulateDropdown(dropdownId, sheetName, columnName, placeholderText) {
-        const dropdown = $(`#${dropdownId}`);
-        if (!dropdown.length) return;
-
-        let data = [];
-        // Using mock data as there is no backend to fetch real data
-        if (sheetName === 'Site Data' && columnName === 'Site Name') {
-            data = ['Dhaka', 'Chittagong', 'Khulna', 'Sylhet', 'Rajshahi'];
-        } else if (sheetName === 'Employee Data' && (columnName === 'PG Operator Name' || columnName === 'Team Leader Name')) {
-             data = ['Rahim', 'Karim', 'Jamil', 'Sanaul', 'Fahim'];
-        } else if (columnName === 'Fuel Used From') {
-             data = ['Main Tank', 'Generator Tank', 'External Can'];
-        }
-
-        // Store employee data if it's PG Operator or Team Leader
-        if (sheetName === 'Employee Data' && (columnName === 'PG Operator Name' || columnName === 'Team Leader Name')) {
-            employeeData = [...new Set([...employeeData, ...data])]; // Union of unique values
-        }
-
-        dropdown.empty().append(`<option value="" disabled selected>${placeholderText}</option>`);
-        data.forEach(item => dropdown.append(new Option(item, item)));
-
-        dropdown.select2({
-            placeholder: placeholderText,
-            allowClear: true,
-            dropdownParent: dropdown.closest('.card-content')
-        });
-        M_updateTextFields();
-    }
-
-    async function initializeForm() {
-        $('#loggedInUserDisplayForm').text(`Logged in as: ${loggedInUsername}`);
-        await fetchAndPopulateDropdown('siteDropdown', 'Site Data', 'Site Name', 'Select Site');
-        await fetchAndPopulateDropdown('pgOperatorDropdown', 'Employee Data', 'PG Operator Name', 'Select PG Operator Name');
-        await fetchAndPopulateDropdown('teamLeaderDropdown', 'Employee Data', 'Team Leader Name', 'Select Team Leader Name');
-
-        // Populate the fuelUsedFrom dropdown for existing events and future ones
-        $('#pgEventsContainer .event-card').each(function() {
-            const eventNumber = $(this).data('event-number');
-            const fuelDropdown = $(`#fuelUsedFrom${eventNumber}`);
-            fuelDropdown.empty().append('<option value="" disabled selected>Select fuel source</option>');
-            employeeData.forEach(item => { if (item) fuelDropdown.append(new Option(item, item)); });
-            fuelDropdown.select2({
-                placeholder: 'Select fuel source...',
-                allowClear: true,
-                dropdownParent: $(this).find('.card-content')
-            }).val(null).trigger('change');
-        });
-    }
-
-    $('#loginForm').on('submit', function(e) {
+    // Login Form Submission
+    $('#loginForm').on('submit', function (e) {
         e.preventDefault();
         const username = $('#username').val();
         const password = $('#password').val();
-
-        // Basic validation
-        if (!username || !password) {
-            if (!username) displayError('username', 'Username is required.');
-            if (!password) displayError('password', 'Password is required.');
-            return;
-        } else {
-            displayError('username', '');
-            displayError('password', '');
-        }
-
         $(this).find('button[type="submit"]').prop('disabled', true);
+        displayError('username', '');
+        displayError('password', '');
         displayMessage('login-status', 'Logging in...', false);
 
-        // Simulate successful login without a backend call
-        setTimeout(() => {
+        fetch('https://script.google.com/macros/s/AKfycbyn_zk2BaPTswVWHEDSXhCZkB5NisS9-3mx2uT807p7Tyn5oVAZ5UWpUsFKhy-rP4Lf/exec', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ action: 'login', username, password }),
+        })
+        .then(response => response.json().then(data => ({ ok: response.ok, data })))
+        .then(({ ok, data }) => {
             $(this).find('button[type="submit"]').prop('disabled', false);
+            if (!ok || !data.success) {
+                throw new Error((data && data.error) || 'Invalid username or password.');
+            }
             displayMessage('login-status', 'Login successful!', false);
-            loggedInUsername = username; // Set the logged in username
+            loggedInUsername = username;
             setTimeout(() => {
                 $('#loginContainer').parent('.login-page-wrapper').fadeOut(400, function() {
                     $('#optionsContainer').fadeIn(400);
-                    $('#loggedInUserDisplayOptions').text(loggedInUsername); // Update username in options
-                    $('html, body').animate({ scrollTop: 0 }, 'fast');
+                    $('#loggedInUserDisplayOptions').text(loggedInUsername); // Set username for options page
                 });
             }, 1000);
-        }, 1500);
+        })
+        .catch(error => {
+            $(this).find('button[type="submit"]').prop('disabled', false);
+            displayMessage('login-status', 'Login failed: ' + error.message, true);
+            $('#password').val('');
+            M_updateTextFields();
+            console.error("Login Fetch Error:", error);
+        });
     });
 
     $('#loginContainer input').on('focus', function() { $(this).siblings('label').addClass('active'); });
     $('#loginContainer input').on('blur', function() { if ($(this).val() === '') $(this).siblings('label').removeClass('active');});
 
-    // Initial state: hide everything except login
-    $('#formContainer').hide();
-    $('#reportContainer').hide();
-    $('#optionsContainer').hide();
-    $('.login-page-wrapper').show();
-    M_updateTextFields();
+    // Option Buttons
+    $('#dataEntryOptionBtn').on('click', function() {
+        $('#optionsContainer').fadeOut(400, function() {
+            $('#formContainer').fadeIn(400);
+            $('#loggedInUserDisplayForm').text(loggedInUsername);
+            initializeForm(); // Call initializeForm here to populate dropdowns for the data entry form
+        });
+    });
+
+    $('#reportOptionBtn').on('click', function() {
+        $('#optionsContainer').fadeOut(400, function() {
+            $('#reportContainer').fadeIn(400);
+             // Re-initialize Select2 for report dropdowns if needed, though initializeForm
+             // might cover most. Specific report dropdowns like reportSiteDropdown,
+             // reportPgOperatorDropdown, reportTeamLeaderDropdown also need data.
+             // For simplicity, will reuse fetchEmployeeAndSiteData and populateDropdown
+             // for report dropdowns.
+             fetchEmployeeAndSiteDataForReport(); // New function for report dropdowns
+        });
+    });
+
+    $('#backToOptionsBtnFromForm').on('click', function() {
+        $('#formContainer').fadeOut(400, function() {
+            $('#optionsContainer').fadeIn(400);
+        });
+    });
+
+    $('#backToOptionsBtnFromReport').on('click', function() {
+        $('#reportContainer').fadeOut(400, function() {
+            $('#optionsContainer').fadeIn(400);
+        });
+    });
 
 
+    // Conditional Fields Logic
     $('#selectOption').on('change', function() {
         const selectedOption = $(this).val();
-        $('#misscallTTFields').slideUp(300);
-        $('#pgRunFields').slideUp(300);
-        $('#addEventBtn').hide();
-        $('#siteAttendDateTimeField').slideUp(300);
         displayError('selectOption', '');
-
-
         if (selectedOption === 'Misscall TT') {
             $('#misscallTTFields').slideDown(300);
+            $('#pgRunFields').slideUp(300);
+            $('#addEventBtn').hide();
+            // Clear PG Run fields when Misscall TT is selected
+            $('#pgEventsContainer').empty();
+            eventCount = 0;
         } else if (selectedOption === 'PG Run') {
-            $('#pgRunFields').slideDown(300, function() {
-                if (eventCount === 0) { // Only add first event if none exist
-                    addEventField(1);
-                }
-                $('#addEventBtn').show();
-            });
+            $('#misscallTTFields').slideUp(300);
+            $('#pgRunFields').slideDown(300);
+            $('#addEventBtn').show();
+            // Clear Misscall TT fields when PG Run is selected
+            $('#siteAttend').val('');
+            $('#siteAttendDateTime').val('');
+            $('#siteAttendDateTimeField').hide();
+            M_updateTextFields();
+        } else {
+            $('#misscallTTFields').slideUp(300);
+            $('#pgRunFields').slideUp(300);
+            $('#addEventBtn').hide();
         }
-        validateAllConditionalFields();
-        M_updateTextFields();
     });
-
 
     $('#siteAttend').on('change', function() {
-        if ($(this).val() === 'YES') {
-            $('#siteAttendDateTimeField').slideDown(300);
+        const selectedValue = $(this).val();
+        displayError('siteAttend', '');
+        if (selectedValue === 'YES') {
             $('#siteAttendDateTime').val(getCurrentDateTimeLocal());
+            $('#siteAttendDateTimeField').slideDown(300);
         } else {
+            $('#siteAttendDateTime').val('');
             $('#siteAttendDateTimeField').slideUp(300);
-            $('#siteAttendDateTime').val(''); // Clear value if not attending
         }
-        validateAllConditionalFields();
         M_updateTextFields();
     });
-
 
     $('#addEventBtn').on('click', function() {
         if (eventCount < MAX_EVENTS) {
-            addEventField(eventCount + 1);
-            $('html, body').animate({
-                scrollTop: $(`#pgEventsContainer .event-card:last`).offset().top - 100
-            }, 500);
+            eventCount++;
+            addEventField(eventCount);
         } else {
             alert(`You can add a maximum of ${MAX_EVENTS} events.`);
         }
-        M_updateTextFields();
     });
 
-    $('#pgForm').on('submit', async function(e) {
+    $('#pgEventsContainer').on('click', '.remove-event-btn', function() {
+        const eventCard = $(this).closest('.event-card');
+        const eventNumberToRemove = eventCard.data('event-number');
+
+        eventCard.slideUp(300, function() {
+            $(this).remove();
+            // Re-index remaining events and update titles
+            eventCount = 0;
+            $('#pgEventsContainer .event-card').each(function(index) {
+                const newEventNumber = index + 1;
+                $(this).data('event-number', newEventNumber);
+                $(this).attr('data-event-number', newEventNumber); // Update attribute as well
+                const suffix = (newEventNumber === 1) ? 'st' : (newEventNumber === 2) ? 'nd' : (newEventNumber === 3) ? 'rd' : 'th';
+                $(this).find('.card-title').html(`${newEventNumber}${suffix} Event ${newEventNumber > 1 ? '<button type="button" class="btn-floating waves-effect waves-light red right remove-event-btn"><i class="material-icons">remove_circle_outline</i></button>' : ''}`);
+
+                // Update IDs and names for inputs within the card
+                $(this).find('[id^="pgStart"]').attr({
+                    id: `pgStart${newEventNumber}`,
+                    name: `pgStart${newEventNumber}`
+                });
+                $(this).find('[for^="pgStart"]').attr('for', `pgStart${newEventNumber}`);
+                $(this).find('[id^="pgStop"]').attr({
+                    id: `pgStop${newEventNumber}`,
+                    name: `pgStop${newEventNumber}`
+                });
+                $(this).find('[for^="pgStop"]').attr('for', `pgStop${newEventNumber}`);
+                $(this).find('[id^="fuelUsedFrom"]').attr({
+                    id: `fuelUsedFrom${newEventNumber}`,
+                    name: `fuelUsedFrom${newEventNumber}`
+                });
+                $(this).find('[for^="fuelUsedFrom"]').attr('for', `fuelUsedFrom${newEventNumber}`);
+                $(this).find('[id$="-error"]').each(function() {
+                    const oldId = $(this).attr('id');
+                    const baseId = oldId.replace(/-\d+-error$/, '-error').replace(`-error`, '');
+                    $(this).attr('id', `${baseId.replace(/\d+$/, newEventNumber)}-error`);
+                });
+                eventCount++;
+            });
+            M_updateTextFields(); // Re-activate labels after re-indexing
+        });
+    });
+
+    // Form Submission
+    $('#pgForm').on('submit', function (e) {
         e.preventDefault();
-        displayMessage('submissionStatus', '', false); // Clear previous messages
+        displayMessage('submissionStatus', '', false);
+        $('.loading').show();
         $(this).find('button[type="submit"]').prop('disabled', true);
-        $('.progress-bar').show(); // Show loading indicator
 
-        let isValid = true;
-        isValid = validateField('ttNumber', 'TT Number is mandatory and must be 7 digits.') && isValid;
-        if($('#ttNumber').val().length !== 7) {
-            displayError('ttNumber', 'TT Number must be 7 digits.');
-            isValid = false;
+        // Basic validation for main fields
+        let formValid = true;
+        if (!validateField('ttNumber', 'TT Number is mandatory and must be 7 digits.')) formValid = false;
+        if ($('#ttNumber').val().length !== 7) {
+            displayError('ttNumber', 'TT Number must be exactly 7 digits.');
+            formValid = false;
         }
+        if (!validateField('operatorName')) formValid = false;
+        if (!validateField('siteDropdown')) formValid = false;
+        if (!validateField('pgOperatorDropdown')) formValid = false;
+        if (!validateField('teamLeaderDropdown')) formValid = false;
+        if (!validateField('selectOption')) formValid = false;
 
-        isValid = validateField('operatorName') && isValid;
-        isValid = validateField('siteDropdown') && isValid;
-        isValid = validateField('pgOperatorDropdown') && isValid;
-        isValid = validateField('teamLeaderDropdown') && isValid;
-        isValid = validateField('selectOption') && isValid;
-        isValid = validateAllConditionalFields() && isValid;
+        formValid = validateAllConditionalFields() && formValid;
 
-        if (!isValid) {
-            $('.progress-bar').hide();
-            $(this).find('button[type="submit"]').prop('disabled', false);
+
+        if (!formValid) {
             displayMessage('submissionStatus', 'Please correct the errors in the form.', true);
-            // Scroll to the first invalid element
+            $('.loading').hide();
+            $(this).find('button[type="submit"]').prop('disabled', false);
             $('html, body').animate({
-                scrollTop: $('.invalid').first().offset().top - 100
-            }, 500);
+                scrollTop: $('.error-message:visible').first().offset().top - 100
+            }, 'fast');
             return;
         }
 
+        // Collect all form data
         const formData = {
+            action: 'submitFormData',
             ttNumber: $('#ttNumber').val(),
             operatorName: $('#operatorName').val(),
             site: $('#siteDropdown').val(),
             pgOperator: $('#pgOperatorDropdown').val(),
             teamLeader: $('#teamLeaderDropdown').val(),
             selectOption: $('#selectOption').val(),
-            submissionTime: new Date().toISOString()
+            loggedInUser: loggedInUsername, // Add logged-in username
         };
 
         if (formData.selectOption === 'Misscall TT') {
@@ -763,233 +787,152 @@
                 });
             });
         }
+        console.log("Submitting Data:", formData);
 
-        console.log('Form Data:', formData);
-
-        try {
-            // Placeholder for backend submission
-            // Since there's no actual backend, simulate success
-            const response = { ok: true, json: () => Promise.resolve({ success: true }) };
-            const result = await response.json();
-
-            if (response.ok && result.success) {
-                displayMessage('submissionStatus', 'Data submitted successfully!', false);
-                $('#pgForm')[0].reset(); // Reset the form
-                $('select').val('').trigger('change'); // Reset select2 dropdowns
-                $('#misscallTTFields').hide();
-                $('#siteAttendDateTimeField').hide();
-                $('#pgRunFields').hide();
-                $('#addEventBtn').hide();
-                $('#pgEventsContainer').empty(); // Clear dynamic events
-                eventCount = 0; // Reset event counter
-                M_updateTextFields(); // Update labels for reset fields
-            } else {
-                throw new Error(result.error || 'Failed to submit data.');
-            }
-        } catch (error) {
-            displayMessage('submissionStatus', 'Submission failed: ' + error.message, true);
-            console.error('Submission Error:', error);
-        } finally {
-            $('.progress-bar').hide();
+        fetch('https://script.google.com/macros/s/AKfycbyn_zk2BaPTswVWHEDSXhCZkB5NisS9-3mx2uT807p7Tyn5oVAZ5UWxKjJv2i-rP4Lf/exec', { // Changed URL for testing
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData),
+        })
+        .then(response => response.json())
+        .then(data => {
+            $('.loading').hide();
             $(this).find('button[type="submit"]').prop('disabled', false);
+            if (data.result === 'success') {
+                displayMessage('submissionStatus', 'Data submitted successfully!', false);
+                $('#pgForm')[0].reset();
+                $('.select2-container').each(function() {
+                     $(this).removeClass('invalid-select2'); // Remove invalid styles from select2
+                });
+                $('select').val('').trigger('change'); // Reset all selects
+                M_updateTextFields();
+                $('#misscallTTFields').hide();
+                $('#pgRunFields').hide();
+                $('#pgEventsContainer').empty();
+                eventCount = 0;
+            } else {
+                displayMessage('submissionStatus', 'Error submitting data: ' + data.error, true);
+            }
+        })
+        .catch(error => {
+            $('.loading').hide();
+            $(this).find('button[type="submit"]').prop('disabled', false);
+            displayMessage('submissionStatus', 'An error occurred: ' + error.message, true);
+            console.error("Submission Fetch Error:", error);
+        });
+    });
+
+    // Report Generation Logic
+    async function fetchEmployeeAndSiteDataForReport() {
+        try {
+            console.log("Fetching employee and site data for report dropdowns...");
+            const response = await fetch('https://script.google.com/macros/s/AKfycbyn_zk2BaPTswVWHEDSXhCZkB5NisS9-3mx2uT807p7Tyn5oVAZ5UWUa-oQ/exec?action=getEmployeeAndSiteData'); // Use the correct URL for report
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+            console.log("Fetched report data:", data);
+            employeeData = data; // Assuming structure is same or similar
+
+            // Populate report specific dropdowns
+            populateDropdown('#reportSiteDropdown', ['All', ...employeeData.sites], 'Select Site');
+            populateDropdown('#reportPgOperatorDropdown', ['All', ...employeeData.pgOperators], 'Select PG Operator Name');
+            populateDropdown('#reportTeamLeaderDropdown', ['All', ...employeeData.teamLeaders], 'Select Team Leader Name');
+
+            // Initialize Select2 for report dropdowns
+            $('#reportContainer select').each(function() {
+                if ($(this).attr('id') !== 'reportOperatorName' && $(this).attr('id') !== 'reportSelectOption') { // Exclude hardcoded dropdowns
+                    $(this).select2({
+                        placeholder: $(this).find('option:first').text(),
+                        allowClear: true
+                    });
+                }
+            });
+            M_updateTextFields();
+        } catch (error) {
+            console.error("Error fetching report dropdown data:", error);
+            // Optionally display a message to the user
         }
-    });
-
-    // Option selection buttons
-    $('#dataEntryOptionBtn').on('click', function() {
-        $('#optionsContainer').fadeOut(400, function() {
-            $('#formContainer').fadeIn(400);
-            initializeForm(); // Initialize form dropdowns
-            $('html, body').animate({ scrollTop: 0 }, 'fast');
-        });
-    });
-
-    $('#reportOptionBtn').on('click', function() {
-        $('#optionsContainer').fadeOut(400, function() {
-            $('#reportContainer').fadeIn(400);
-            initializeReportFilters(); // Initialize report filter dropdowns
-            $('html, body').animate({ scrollTop: 0 }, 'fast');
-        });
-    });
-
-    // Back buttons
-    $('#backToOptionsBtnFromForm').on('click', function() {
-        $('#formContainer').fadeOut(400, function() {
-            $('#optionsContainer').fadeIn(400);
-            $('html, body').animate({ scrollTop: 0 }, 'fast');
-        });
-    });
-
-    $('#backToOptionsBtnFromReport').on('click', function() {
-        $('#reportContainer').fadeOut(400, function() {
-            $('#optionsContainer').fadeIn(400);
-            $('html, body').animate({ scrollTop: 0 }, 'fast');
-        });
-    });
-
-
-    async function initializeReportFilters() {
-        // Populate report filter dropdowns similar to form dropdowns
-        await fetchAndPopulateDropdown('reportSiteDropdown', 'Site Data', 'Site Name', 'Select Site');
-        await fetchAndPopulateDropdown('reportPgOperatorDropdown', 'Employee Data', 'PG Operator Name', 'Select PG Operator Name');
-        await fetchAndPopulateDropdown('reportTeamLeaderDropdown', 'Employee Data', 'Team Leader Name', 'Select Team Leader Name');
-
-        // Add 'All' option to Operator Name and Select Option dropdowns if not already there
-        const reportOperatorName = $('#reportOperatorName');
-        if (reportOperatorName.find('option[value="All"]').length === 0) {
-            reportOperatorName.prepend('<option value="All">All Operators</option>');
-        }
-        reportOperatorName.select2({
-            placeholder: 'Select an operator',
-            allowClear: true,
-            dropdownParent: reportOperatorName.closest('.card-content')
-        }).val('All').trigger('change');
-
-        const reportSelectOption = $('#reportSelectOption');
-        if (reportSelectOption.find('option[value="All"]').length === 0) {
-            reportSelectOption.prepend('<option value="All">All Types</option>');
-        }
-        reportSelectOption.select2({
-            placeholder: 'Select an option',
-            allowClear: true,
-            dropdownParent: reportSelectOption.closest('.card-content')
-        }).val('All').trigger('change');
-
-        // Set default dates to past 7 days
-        const endDate = new Date();
-        const startDate = new Date();
-        startDate.setDate(endDate.getDate() - 7);
-
-        $('#reportStartDate').val(startDate.toISOString().slice(0, 10));
-        $('#reportEndDate').val(endDate.toISOString().slice(0, 10));
-        M_updateTextFields();
     }
 
-    $('#generateReportBtn').on('click', async function() {
+
+    $('#generateReportBtn').on('click', function() {
         const startDate = $('#reportStartDate').val();
         const endDate = $('#reportEndDate').val();
-        const ttNumberFilter = $('#reportTtNumber').val();
+        const ttNumber = $('#reportTtNumber').val();
         const operatorName = $('#reportOperatorName').val();
         const site = $('#reportSiteDropdown').val();
         const pgOperator = $('#reportPgOperatorDropdown').val();
         const teamLeader = $('#reportTeamLeaderDropdown').val();
         const selectOption = $('#reportSelectOption').val();
 
-        // Basic date validation
-        if (startDate && endDate && new Date(startDate) > new Date(endDate)) {
-            alert('Start Date cannot be after End Date.');
-            return;
+        if (ttNumber && ttNumber.length !== 7) {
+             displayError('reportTtNumber', 'TT Number must be exactly 7 digits.');
+             return;
+        } else {
+             displayError('reportTtNumber', '');
         }
 
-        // Mock data for report generation (for demonstration purposes without a backend)
-        const mockReportData = [
-            {
-                submissionTime: "2025-05-28T10:00:00.000Z",
-                ttNumber: "1234567",
-                operatorName: "GP",
-                site: "Dhaka",
-                pgOperator: "Rahim",
-                teamLeader: "Sanaul",
-                selectOption: "PG Run",
-                pgEvents: [
-                    { pgStart: "2025-05-28T09:00:00.000Z", pgStop: "2025-05-28T10:00:00.000Z", fuelUsedFrom: "Main Tank" }
-                ]
+        const reportCriteria = {
+            action: 'getReportData',
+            startDate: startDate,
+            endDate: endDate,
+            ttNumber: ttNumber,
+            operatorName: operatorName === 'All' ? '' : operatorName,
+            site: site === 'All' ? '' : site,
+            pgOperator: pgOperator === 'All' ? '' : pgOperator,
+            teamLeader: teamLeader === 'All' ? '' : teamLeader,
+            selectOption: selectOption === 'All' ? '' : selectOption
+        };
+
+        // Example fetch for report data (assuming a different Google Script URL or action)
+        fetch('https://script.google.com/macros/s/AKfycbyn_zk2BaPTswVWHEDSXhCZkB5NisS9-3mx2uT807p7Tyn5oVAZ5UWUa-oQ/exec', { // This URL should be distinct if it fetches report data
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
             },
-            {
-                submissionTime: "2025-05-29T11:30:00.000Z",
-                ttNumber: "7654321",
-                operatorName: "BL",
-                site: "Chittagong",
-                pgOperator: "Karim",
-                teamLeader: "Fahim",
-                selectOption: "Misscall TT",
-                siteAttend: "YES",
-                siteAttendDateTime: "2025-05-29T11:00:00.000Z"
-            },
-             {
-                submissionTime: "2025-05-30T14:00:00.000Z",
-                ttNumber: "1122334",
-                operatorName: "ROBI",
-                site: "Khulna",
-                pgOperator: "Jamil",
-                teamLeader: "Rahim",
-                selectOption: "PG Run",
-                pgEvents: [
-                    { pgStart: "2025-05-30T12:00:00.000Z", pgStop: "2025-05-30T14:00:00.000Z", fuelUsedFrom: "Generator Tank" }
-                ]
-            },
-            {
-                submissionTime: "2025-05-30T15:00:00.000Z",
-                ttNumber: "8765432",
-                operatorName: "GP",
-                site: "Sylhet",
-                pgOperator: "Rahim",
-                teamLeader: "Sanaul",
-                selectOption: "Misscall TT",
-                siteAttend: "NO"
-            },
-            {
-                submissionTime: "2025-06-01T09:00:00.000Z",
-                ttNumber: "9876543",
-                operatorName: "BL",
-                site: "Rajshahi",
-                pgOperator: "Fahim",
-                teamLeader: "Karim",
-                selectOption: "PG Run",
-                pgEvents: [
-                    { pgStart: "2025-06-01T08:00:00.000Z", pgStop: "2025-06-01T09:00:00.000Z", fuelUsedFrom: "External Can" }
-                ]
+            body: JSON.stringify(reportCriteria),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success && data.reportData) {
+                renderReportTable(data.reportData);
+            } else {
+                renderReportTable([]); // Show empty table if no data or error
             }
-        ].filter(data => {
-            const recordDate = new Date(data.submissionTime).toISOString().slice(0, 10);
-            const isDateInRange = (!startDate || recordDate >= startDate) && (!endDate || recordDate <= endDate);
-            const isOperatorMatch = (operatorName === 'All' || !operatorName || data.operatorName === operatorName);
-            const isSiteMatch = (!site || data.site === site);
-            const isPgOperatorMatch = (!pgOperator || data.pgOperator === pgOperator);
-            const isTeamLeaderMatch = (!teamLeader || data.teamLeader === teamLeader);
-            const isSelectOptionMatch = (selectOption === 'All' || !selectOption || data.selectOption === selectOption);
-            const isTtNumberMatch = (!ttNumberFilter || data.ttNumber === ttNumberFilter);
-
-            // Filter based on loggedInUsername
-            const isUserSpecific = (data.pgOperator === loggedInUsername || data.teamLeader === loggedInUsername);
-
-
-            return isDateInRange && isOperatorMatch && isSiteMatch && isPgOperatorMatch && isTeamLeaderMatch && isSelectOptionMatch && isTtNumberMatch && isUserSpecific;
+        })
+        .catch(error => {
+            console.error("Error fetching report data:", error);
+            renderReportTable([]); // Show empty table on error
+            $('#noReportDataMessage').text('Error fetching report data.').show();
         });
-
-
-        populateReportTable(mockReportData);
-
     });
 
-    function populateReportTable(data) {
+    function renderReportTable(data) {
         const tbody = $('#reportTable tbody');
         tbody.empty();
         $('#noReportDataMessage').hide();
         $('#exportReportBtn').hide();
 
         if (data && data.length > 0) {
-            data.forEach(row => {
+            $.each(data, function(index, row) {
                 let rowHtml = `<tr>
-                    <td>${row.submissionTime ? new Date(row.submissionTime).toLocaleDateString() : ''}</td>
-                    <td>${row.ttNumber || ''}</td>
-                    <td>${row.operatorName || ''}</td>
-                    <td>${row.site || ''}</td>
-                    <td>${row.pgOperator || ''}</td>
-                    <td>${row.teamLeader || ''}</td>
-                    <td>${row.selectOption || ''}</td>`;
+                                <td>${row.timestamp ? new Date(row.timestamp).toLocaleString() : ''}</td>
+                                <td>${row.ttNumber || ''}</td>
+                                <td>${row.operatorName || ''}</td>
+                                <td>${row.site || ''}</td>
+                                <td>${row.pgOperator || ''}</td>
+                                <td>${row.teamLeader || ''}</td>
+                                <td>${row.selectOption || ''}</td>
+                                <td>${row.siteAttend || ''}</td>
+                                <td>${row.siteAttendDateTime ? new Date(row.siteAttendDateTime).toLocaleString() : ''}</td>`;
 
-                if (row.selectOption === 'Misscall TT') {
-                    rowHtml += `<td>${row.siteAttend || ''}</td>
-                                <td>${row.siteAttendDateTime ? new Date(row.siteAttendDateTime).toLocaleString() : ''}</td>
-                                <td></td><td></td><td></td><td></td>`; // Empty for PG Run fields
-                } else if (row.selectOption === 'PG Run' && row.pgEvents && row.pgEvents.length > 0) {
-                    // For PG Run, iterate through events and display multiple rows or summarize
-                    // For simplicity, we'll display the first event's details in the main row
-                    // More complex reports might require a separate detailed view or expansion
+                if (row.selectOption === 'PG Run' && row.pgEvents && row.pgEvents.length > 0) {
+                    // For simplicity, showing only the first event details in the main row
                     const firstEvent = row.pgEvents[0];
-                    rowHtml += `<td></td><td></td>
-                                <td>${firstEvent.pgStart ? new Date(firstEvent.pgStart).toLocaleString() : ''}</td>
+                    rowHtml += `<td>${firstEvent.pgStart ? new Date(firstEvent.pgStart).toLocaleString() : ''}</td>
                                 <td>${firstEvent.pgStop ? new Date(firstEvent.pgStop).toLocaleString() : ''}</td>
                                 <td>${firstEvent.fuelUsedFrom || ''}</td>
                                 <td>${calculateTotalFuel(row.pgEvents)}</td>`; // Calculate total fuel if needed
@@ -1019,7 +962,6 @@
         const wb = XLSX.utils.table_to_book(document.getElementById('reportTable'), { sheet: "Report" });
         XLSX.writeFile(wb, "E.CO_PG_Run_Report.xlsx");
     });
-
   });
 </script>
 </body>
